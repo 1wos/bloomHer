@@ -1,261 +1,261 @@
-# BloomHer — 사소한 하루도 성장으로 바꿔주는 AI
+# BloomHer — AI That Turns Your Ordinary Day into Growth
 
-> *"오늘 한 모든 것에는 성장이 숨어 있어요."*
+> *"Everything you did today has hidden growth in it."*
 
 ---
 
 ## 1. Project Overview
 
-| 항목 | 내용 |
-|------|------|
-| **프로젝트명** | BloomHer (가칭) |
-| **한 줄 설명** | 사소한 하루의 일상도 성장으로 발견해주는 AI 일기 |
-| **대상** | 자기 역량을 과소평가하는 여성 (취준생, 직장인, 학생, 누구든) |
-| **핵심 가치** | 메타인지 각성 → 성취감 → 자신감 → 성장 |
-| **AI 도구** | Prompt Engineering (ChatGPT / Claude / Gemini) |
-| **제출 대상** | AI Skills 4 Women (Founderz × Microsoft) Final Challenge |
+| Item | Detail |
+|------|--------|
+| **Project Name** | BloomHer |
+| **One-liner** | AI diary that discovers growth hidden in your everyday moments |
+| **Target Users** | Women who underestimate their own capabilities (job seekers, professionals, students — anyone) |
+| **Core Value** | Metacognitive Awakening → Sense of Achievement → Confidence → Growth |
+| **AI Tools** | Prompt Engineering (ChatGPT / Claude / Gemini) |
+| **Submission** | AI Skills 4 Women (Founderz × Microsoft) Final Challenge |
 
 ---
 
 ## 2. Problem Definition
 
-### 2-1. 핵심 문제: "나는 별로 한 게 없어요"
+### 2-1. Core Problem: "I haven't really done anything"
 
-여성들이 자기 경험을 과소평가하는 현상은 전 세계적으로 문서화되어 있습니다.
+The phenomenon of women undervaluing their own experiences is globally documented.
 
-**글로벌 근거:**
-- **Hewlett-Packard 연구**: 여성은 자격 요건 100% 충족 시에만 지원, 남성은 60%에서도 지원
-- **Cornell 대학교 (2003)**: 남성은 능력 과대평가, 여성은 과소평가
-- **Harvard Business School (2026)**: 여성에게 격차를 알려주면 17% 더 많이 지원
-- **Smart Works Index (2025)**: 영국 여성 — 더 많이 지원하지만 자신감 점점 하락
+**Global Evidence:**
+- **Hewlett-Packard Study**: Women apply only when they meet 100% of qualifications; men apply at 60%
+- **Cornell University (2003)**: Men overestimate their abilities; women underestimate theirs
+- **Harvard Business School (2026)**: When women are informed of the gap, they apply 17% more
+- **Smart Works Index (2025)**: UK women — apply more but confidence steadily declines
 
-**한국 현실:**
-- 한국 취준생 70%가 "자소서 쓸 경험이 부족하다"고 느낌
-- 트위터에서 "경험 정리법" 스레드가 바이럴 = 수요 증명
-- 여성의 소극적 자기 표현 문화
+**Korea-Specific Reality:**
+- 70% of Korean job seekers feel they "lack experiences to write about" in applications
+- Twitter threads on "how to organize experiences" go viral = proven demand
+- Cultural tendency for women to downplay their achievements
 
-**메타인지 연구 근거:**
-- Song et al. (2020): 메타인지 활동이 구직 성과를 조절
-- Kanar (2021): 메타인지 촉진 개입 → 면접 기회 증가
-- Freire et al. (2023): 소프트 스킬 메타인지 훈련 → 자기효능감 향상
-- Sari et al. (2025): 메타인지 기술과 커리어 탐색 기대 간 긍정적 관계
+**Metacognition Research:**
+- Song et al. (2020): Metacognitive activities moderate job search success
+- Kanar (2021): Metacognition-prompting interventions → increased interview opportunities
+- Freire et al. (2023): Soft skills metacognition training → improved self-efficacy
+- Sari et al. (2025): Positive relationship between metacognitive skills and career exploration expectations
 
-### 2-2. 핵심 인사이트
+### 2-2. Core Insight
 
-> "경험이 없는 게 아니라, 자기가 뭘 했는지 **못 보는 것**이다."
+> "It's not that they lack experience — they **can't see** what they've done."
 > 
-> 이것을 **메타인지(Metacognition)의 부재**라고 합니다.
+> This is called **the absence of Metacognition**.
 
 ---
 
 ## 3. Solution: BloomHer
 
-### 3-1. 컨셉
+### 3-1. Concept
 
-매일 사소한 일상을 기록하면, AI가 그 안에서 **숨겨진 성장 포인트**를 발견해주는 서비스.
+A service where you record your everyday moments, and AI discovers **hidden growth points** within them.
 
-**취준 도구가 아닙니다.** 자기 성장 인식 도구입니다.
+**This is NOT a job prep tool.** It's a self-growth awareness tool.
 
-### 3-2. 핵심 흐름
+### 3-2. Core Flow
 
 ```
-사용자: "오늘 마트에서 할인 비교하면서 장봤어"
+User: "I compared discounts at the grocery store today"
    ↓
-AI: "분석력 + 의사결정력이 성장했어요! 🌱
-     할인 비교는 데이터 분석의 일종이에요.
-     여러 선택지 중 최적을 고른 건 의사결정력이에요."
+AI: "Your analytical thinking + decision-making grew today! 🌱
+     Comparing discounts is a form of data analysis.
+     Choosing the best option from many is decision-making."
    ↓
-사용자: "와 나 이런 역량이 있었어?!" 
-   = 메타인지 각성 + 뿌듯함!
+User: "Wow, I had these skills?!" 
+   = Metacognitive awakening + pride!
 ```
 
-### 3-3. 사용 시나리오
+### 3-3. Usage Scenarios
 
-| 입력 (사소한 일상) | AI 발견 (성장 포인트) |
+| Input (Everyday Moment) | AI Discovery (Growth Points) |
 |---|---|
-| "친구 고민 들어줬어" | 공감 능력 + 경청 스킬 🌟 |
-| "요리 레시피 보고 처음 해봤어" | 도전정신 + 학습력 🌸 |
-| "팀 미팅에서 내 의견 제시했어" | 리더십 + 의사소통 🔥 |
-| "늦잠 잤는데 지각 안 하게 준비했어" | 시간 관리 + 위기 대응 ⚡ |
-| "블로그에 후기 올렸어" | 콘텐츠 제작 + 자기 표현 ✍️ |
+| "Listened to my friend's worries" | Empathy + Active Listening 🌟 |
+| "Tried a new recipe for the first time" | Initiative + Learning Ability 🌸 |
+| "Shared my opinion in a team meeting" | Leadership + Communication 🔥 |
+| "Overslept but still made it on time" | Time Management + Crisis Response ⚡ |
+| "Posted a review on my blog" | Content Creation + Self-Expression ✍️ |
 
-### 3-4. 누적 효과 (게이미피케이션)
+### 3-4. Cumulative Effect (Gamification)
 
 ```
-매일 기록 → 성장 포인트 쌓임 → 시각화
+Daily logging → Growth points accumulate → Visualization
 
-1주일 후: "이번 주 리더십 3회, 창의성 2회, 공감 5회"
-1개월 후: "이번 달 가장 성장한 역량: 의사소통 (12회)"
-         → 잔디 초록초록 🟩🟩🟩
-         → 블록 타워 쌓임 📊
-         → "나 이렇게 많이 성장했구나!" = 뿌듯함!
+After 1 week: "This week: Leadership 3x, Creativity 2x, Empathy 5x"
+After 1 month: "Most grown skill this month: Communication (12x)"
+              → Green contribution grass 🟩🟩🟩
+              → Skill block tower building 📊
+              → "I've grown this much!" = Pride!
 ```
 
 ---
 
-## 4. STAR(L) Framework (오리지널)
+## 4. STAR(L) Framework (Original)
 
-기존 STAR 기법을 확장하여 **메타인지 요소(Learned)** 를 추가:
+An extension of the classic STAR method with a **metacognitive element (Learned)**:
 
-| 요소 | 설명 | 예시 |
-|------|------|------|
-| **S** (Situation) | 어떤 상황이었는지 | "마트에서 장을 봤어" |
-| **T** (Task) | 어떤 역할/목표가 있었는지 | "예산 안에서 필요한 것 사기" |
-| **A** (Action) | 구체적으로 무엇을 했는지 | "할인 비교, 단위당 가격 계산" |
-| **R** (Result) | 어떤 결과가 있었는지 | "예산 20% 절약" |
-| **L** (Learned) | 이 경험에서 배운 점 | "데이터 비교 분석이 일상에도 쓰이는구나" |
+| Element | Description | Example |
+|---------|-------------|---------|
+| **S** (Situation) | What was the context? | "I went grocery shopping" |
+| **T** (Task) | What was the goal/role? | "Buy everything within budget" |
+| **A** (Action) | What specifically did you do? | "Compared discounts, calculated unit prices" |
+| **R** (Result) | What was the outcome? | "Saved 20% of budget" |
+| **L** (Learned) | What did you learn from this? | "Data comparison analysis applies to daily life too" |
 
-**L(Learned)** 이 핵심 — 이게 메타인지 활성화 트리거입니다.
+**L (Learned) is the key** — this is the metacognition activation trigger.
 
 ---
 
 ## 5. AI Prompt Design
 
-### Prompt 1: 일상 → 성장 발견
+### Prompt 1: Daily → Growth Discovery
 
 ```
-당신은 따뜻하고 격려하는 성장 코치입니다.
+You are a warm, encouraging growth coach.
 
-사용자가 오늘 있었던 사소한 일상을 입력하면:
+When the user shares something from their day:
 
-1. 그 경험 속에 숨겨진 역량/성장 포인트를 2-3개 발견해주세요
-2. 왜 이것이 역량인지 한 줄로 설명해주세요
-3. 따뜻한 격려 메시지를 한 줄 추가해주세요
-4. 성장 이모지 스티커를 부여해주세요
+1. Discover 2-3 hidden skills/growth points in that experience
+2. Explain in one line why each qualifies as a skill
+3. Add one warm encouragement message
+4. Award a growth emoji sticker
 
-[톤] "와 이것도 역량이었어?!" 하고 깨닫게 되는 느낌
-[절대 금지] 부정적 평가, "이건 별거 아니에요" 식의 표현
-[핵심] 아무리 사소해도 성장 포인트가 있다는 것을 알려주기
+[Tone] Make them think "Wow, that was a skill too?!"
+[Never] Negative evaluations, "that's nothing special" type expressions
+[Core] Even the most trivial thing has growth points — help them see it
 ```
 
-### Prompt 2: 주간/월간 성장 리포트
+### Prompt 2: Weekly/Monthly Growth Report
 
 ```
-사용자의 이번 주(또는 이번 달) 기록을 분석해서:
+Analyze the user's records for this week (or month):
 
-1. 가장 많이 성장한 역량 Top 3
-2. 숨겨진 강점 1개 (본인도 몰랐을 의외의 역량)
-3. 성장 트렌드 (어떤 역량이 꾸준히 올라가고 있는지)
-4. 격려 메시지
-5. 다음 주 추천 (이 역량을 더 키우려면?)
+1. Top 3 most-grown skills
+2. 1 hidden strength (a surprising skill they didn't know about)
+3. Growth trends (which skills are consistently rising)
+4. Encouragement message
+5. Next week recommendation (how to develop these skills further)
 ```
 
-### Prompt 3: STAR(L) 구조화 (선택)
+### Prompt 3: STAR(L) Structuring (Optional)
 
 ```
-사용자가 특정 경험을 더 깊이 분석하고 싶을 때:
+When the user wants to analyze a specific experience deeper:
 
-1. STAR(L) 프레임워크로 자동 구조화
-2. 숨겨진 역량 3-5개 매핑
-3. 관련 직무/분야 예시
-4. 면접 답변 생성 (선택)
+1. Auto-structure using the STAR(L) framework
+2. Map 3-5 hidden skills
+3. Related job/field examples
+4. Interview answer generation (optional)
 ```
 
 ---
 
 ## 6. Prompt Iteration Log
 
-| 버전 | 문제점 | 개선 |
-|------|--------|------|
-| v1.0 | 역량이 추상적 | "관련 직무 예시" 추가 |
-| v1.1 | L(Learned) 피상적 | "메타인지 관점에서" 명시 |
-| v1.2 | 톤이 딱딱함 | "따뜻하고 격려하는" 명시 |
-| v2.0 | 게이미피케이션 없음 | 스티커/이모지 보상 추가 |
-| v2.1 | 취준 포커싱 과함 | "일상 성장 발견"으로 방향 전환 |
+| Version | Issue | Improvement |
+|---------|-------|-------------|
+| v1.0 | Skills too abstract | Added "related job examples" |
+| v1.1 | L (Learned) too superficial | Added "from a metacognitive perspective" |
+| v1.2 | Tone too formal | Specified "warm and encouraging" |
+| v2.0 | No gamification | Added sticker/emoji rewards |
+| v2.1 | Too job-prep focused | Pivoted to "everyday growth discovery" |
 
 ---
 
 ## 7. Gamification Design
 
-### 성장 잔디 (GitHub 스타일)
-- 매일 기록하면 잔디 한 칸 채워짐
-- 꾸준히 기록할수록 초록초록
-- "나 이번 달 20일이나 기록했네!"
+### Growth Grass (GitHub-style Contribution Graph)
+- Each daily log fills one grass tile
+- Consistent logging = lush green
+- "I logged 20 days this month!"
 
-### 역량 블록 타워
-- 발견된 역량마다 블록 하나씩 쌓임
-- 가장 많이 반복된 역량 = 가장 높은 타워
-- "내 강점이 눈에 보인다!"
+### Skill Block Tower
+- Each discovered skill adds one block
+- Most repeated skill = tallest tower
+- "I can see my strengths!"
 
-### 성장 스티커
-- 역량 발견마다 귀여운 스티커 부여
-- 🌱 분석력 발견! 🌸 공감 능력 업! 🔥 리더십 성장!
-- "스티커 모으는 재미!"
+### Growth Stickers
+- Cute stickers awarded for each skill discovery
+- 🌱 Analytical Thinking! 🌸 Empathy Up! 🔥 Leadership Growth!
+- "Collecting stickers is fun!"
 
 ---
 
-## 8. Differentiation (기존 도구와 차별점)
+## 8. Differentiation
 
-| | 기존 AI 커리어 도구 | 3C4P/STAR (수동) | **BloomHer** |
+| | Existing AI Career Tools | 3C4P/STAR (Manual) | **BloomHer** |
 |---|---|---|---|
-| 초점 | 이력서/면접 최적화 | 취준 경험 정리 | **일상 성장 발견** |
-| 대상 | 경력자 | 취준생 | **모든 여성** |
-| 입력 | 이력서 업로드 | 경험 상세 작성 | **한 줄 일상 기록** |
-| 시간 | 30분+ | 1시간+ | **1분** |
-| 동기부여 | 없음 | 없음 | **게이미피케이션** |
-| 감정 효과 | 없음 | 없음 | **뿌듯함 + 성취감** |
-| 이론 기반 | ATS 최적화 | 마케팅 프레임워크 | **메타인지 + STAR(L)** |
+| Focus | Resume/interview optimization | Job prep experience organization | **Everyday growth discovery** |
+| Target | Experienced professionals | Job seekers | **All women** |
+| Input | Resume upload | Detailed experience writing | **One-line daily log** |
+| Time | 30min+ | 1hr+ | **1 minute** |
+| Motivation | None | None | **Gamification** |
+| Emotional Impact | None | None | **Pride + Achievement** |
+| Theory | ATS optimization | Marketing framework | **Metacognition + STAR(L)** |
 
 ---
 
 ## 9. Data Privacy
 
-- 개인 일기 데이터 = 민감 정보
-- AI 분석 후 결과만 제공, 원본 서버 비저장
-- 사용자가 수정/삭제 가능
-- 민감 경험 선택적 포함/제외
+- Personal diary data = sensitive information
+- AI analyzes and returns results only; originals not stored on server
+- Users can edit/delete at any time
+- Selective inclusion/exclusion of sensitive experiences
 
 ---
 
-## 10. Presentation Plan (3분 영상)
+## 10. Presentation Plan (3-minute Video)
 
 ```
-0:00-0:20  훅
-           [한국 트위터 캡처 + HP 연구]
-           "여성은 100% 충족해야 지원합니다"
-           "근데 진짜 못하는 걸까요?"
+0:00-0:20  Hook
+           [Korean Twitter screenshot + HP study]
+           "Women only apply when they meet 100%"
+           "But do they really lack ability?"
 
-0:20-0:40  문제 정의
-           "메타인지 부재 — 못 보는 거예요"
-           "AI4Women 참여하면서 직접 봤어요"
+0:20-0:40  Problem Definition
+           "Absence of metacognition — they can't see it"
+           "I witnessed this firsthand through AI4Women"
 
-0:40-1:00  솔루션 소개
-           "BloomHer — 사소한 하루도 성장으로!"
-           [서비스 화면 또는 프롬프트 시연]
+0:40-1:00  Solution Introduction
+           "BloomHer — turning your ordinary day into growth!"
+           [Service screen or prompt demo]
 
-1:00-2:00  실제 시연
-           입력: "오늘 마트에서 할인 비교하면서 장봤어"
-           → AI 분석 결과 보여주기
-           → 역량 발견 + 스티커 + 격려
+1:00-2:00  Live Demo
+           Input: "I compared discounts at the grocery store today"
+           → AI analysis results
+           → Skill discovery + sticker + encouragement
            
-           입력: "팀 미팅에서 내 의견 제시했어"
-           → 리더십 + 의사소통 발견
+           Input: "I shared my opinion in a team meeting"
+           → Leadership + Communication discovery
 
-2:00-2:30  반복 개선 과정
-           "v1 → v2 어떻게 바꿨는지"
-           + 게이미피케이션 시각화
+2:00-2:30  Iteration Process
+           "How we went from v1 → v2"
+           + Gamification visualization
 
-2:30-3:00  마무리
-           "당신의 오늘은 이미 성장이에요.
-            BloomHer가 그것을 발견해드릴게요. 🌸"
+2:30-3:00  Closing
+           "Your today is already growth.
+            BloomHer will help you discover it. 🌸"
 ```
 
 ---
 
 ## 11. Expert Persona Panel
 
-### 제작 과정에서 참여한 전문가 페르소나:
+### Expert personas involved in the design process:
 
-| 페르소나 | 역할 | 전문성 |
-|----------|------|--------|
-| Dr. Yuna Park | 여성 심리학자 | 여성 자기효능감, 자신감 격차 연구 |
-| Prof. Sarah Kim | 메타인지 연구자 | 메타인지와 커리어 발달 |
-| Jimin Lee | UX 디자이너 | 감성 UI, 게이미피케이션, 동기부여 설계 |
-| Dr. Emily Watson | AI 윤리 연구자 | AI 코칭 윤리, 데이터 프라이버시 |
-| Minji Choi | 커리어 코치 | 여성 커리어 개발, NCS 역량 매핑 |
-| Hana Nakamura | 프롬프트 엔지니어 | LLM 프롬프트 최적화, 반복 개선 |
-| Dr. Priya Sharma | 교육공학 연구자 | 게이미피케이션과 학습 동기 |
-| Soyeon Kang | 콘텐츠 크리에이터 | 여성 대상 콘텐츠, 공감 톤 |
+| Persona | Role | Expertise |
+|---------|------|-----------|
+| Dr. Yuna Park | Women's Psychologist | Women's self-efficacy, confidence gap research |
+| Prof. Sarah Kim | Metacognition Researcher | Metacognition and career development |
+| Jimin Lee | UX Designer | Emotional UI, gamification, motivation design |
+| Dr. Emily Watson | AI Ethics Researcher | AI coaching ethics, data privacy |
+| Minji Choi | Career Coach | Women's career development, NCS skill mapping |
+| Hana Nakamura | Prompt Engineer | LLM prompt optimization, iterative improvement |
+| Dr. Priya Sharma | Educational Technology Researcher | Gamification and learning motivation |
+| Soyeon Kang | Content Creator | Women-focused content, empathetic tone |
 
 ---
 
@@ -275,16 +275,16 @@ AI: "분석력 + 의사결정력이 성장했어요! 🌱
 
 ## 13. Name Candidates
 
-| 이름 | 의미 | 느낌 |
-|------|------|------|
-| **BloomHer** | 그녀가 피어나다 | 성장 + 여성 |
-| **DailyBloom** | 매일 피어나기 | 일상 + 성장 |
-| **GrowMe** | 나를 키우다 | 직관적 |
-| **TinyGrowth** | 작은 성장 | 사소함 강조 |
-| **HerStory** | 그녀의 이야기 | 스토리 + 여성 |
-| **ShineLog** | 빛나는 기록 | 기록 + 긍정 |
+| Name | Meaning | Feel |
+|------|---------|------|
+| **BloomHer** | She blooms | Growth + Women |
+| **DailyBloom** | Bloom every day | Daily + Growth |
+| **GrowMe** | Grow myself | Intuitive |
+| **TinyGrowth** | Small growth | Emphasizes the trivial |
+| **HerStory** | Her story | Story + Women |
+| **ShineLog** | Shining record | Logging + Positivity |
 
 ---
 
 *Built for AI Skills 4 Women (Founderz × Microsoft) Final Challenge*
-*"오늘 한 모든 것에는 성장이 숨어 있어요." 🌸*
+*"Everything you did today has hidden growth in it." 🌸*

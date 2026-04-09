@@ -2,12 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import SkillCard, { type Skill } from './SkillCard';
 import GrowthStreak from './GrowthStreak';
 import { discoverGrowth } from '../services/ai';
+import { useTypewriter } from '../hooks/useTypewriter';
+import { collectSkill, addEntry } from '../services/storage';
+import type { EntryRecord } from '../services/storage';
 
 interface Message {
   id: string;
   type: 'user' | 'ai' | 'skill';
   text?: string;
   skill?: Skill;
+  // Store raw skill data for storage calls
+  rawSkill?: { name: string; icon: string; description: string };
   timestamp: string;
 }
 
@@ -32,32 +37,60 @@ function mapCategory(raw: string): Skill['category'] {
 const welcomeMessage: Message = {
   id: 'welcome',
   type: 'ai',
-  text: "Hi! I'm BloomHer 🌷 Your personal growth discovery companion. Tell me something you did today — even the smallest thing — and I'll show you the hidden skills you didn't know you had!",
+  text: "Hi! I'm BloomHer \u{1F337} Your personal growth discovery companion. Tell me something you did today \u2014 even the smallest thing \u2014 and I'll show you the hidden skills you didn't know you had!",
   timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
 };
 
 interface ChatViewProps {
   onSkillCollected: () => void;
+  streak: number;
+  loggedDays: number[];
 }
 
-export default function ChatView({ onSkillCollected }: ChatViewProps) {
+export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatViewProps) {
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasAnimatedWelcome = useRef(false);
+  // Track last user input for storage
+  const lastUserInputRef = useRef('');
 
-  const streak = 12;
-  const loggedDays = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const welcomeAnimated = useTypewriter(welcomeMessage.text!, {
+    speed: 30,
+    enabled: !hasAnimatedWelcome.current,
+  });
+
+  useEffect(() => {
+    if (welcomeAnimated === welcomeMessage.text) {
+      hasAnimatedWelcome.current = true;
+    }
+  }, [welcomeAnimated]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  const handleCollect = (msg: Message) => {
+    if (msg.rawSkill) {
+      const category = mapCategory(msg.rawSkill.name);
+      collectSkill(
+        msg.rawSkill.name,
+        msg.rawSkill.icon,
+        msg.rawSkill.description,
+        lastUserInputRef.current,
+        category,
+      );
+    }
+    onSkillCollected();
+  };
+
   const sendMessage = async () => {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
+    lastUserInputRef.current = trimmed;
     const now = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
     const userMsg: Message = {
@@ -83,32 +116,49 @@ export default function ChatView({ onSkillCollected }: ChatViewProps) {
       };
       setMessages((prev) => [...prev, aiMsg]);
 
+      // Collect skills for the entry record
+      const entrySkills: { name: string; icon: string; description: string }[] = [];
+
       // Skill cards
       if (result.skills && result.skills.length > 0) {
         for (let i = 0; i < result.skills.length; i++) {
           await new Promise((r) => setTimeout(r, 400));
           const s = result.skills[i];
+          const icon = s.icon || ['\u{1F331}', '\u{1F50D}', '\u{1F4A1}', '\u26A1', '\u{1F3AF}'][i % 5];
+          entrySkills.push({ name: s.name, icon, description: s.description });
           const skillMsg: Message = {
             id: `skill-${Date.now()}-${i}`,
             type: 'skill',
             skill: {
               id: `skill-${Date.now()}-${i}`,
-              emoji: s.icon || ['🌱', '🔍', '💡', '⚡', '🎯'][i % 5],
+              emoji: icon,
               title: s.name,
               description: s.description,
               category: mapCategory(s.name || 'creativity'),
             },
+            rawSkill: { name: s.name, icon, description: s.description },
             timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
           };
           setMessages((prev) => [...prev, skillMsg]);
         }
       }
+
+      // Save entry to localStorage
+      const entry: EntryRecord = {
+        id: `entry-${Date.now()}`,
+        date: new Date().toISOString().split('T')[0],
+        input: trimmed,
+        skills: entrySkills,
+        type: 'daily',
+      };
+      addEntry(entry);
+      onSkillCollected(); // refresh parent state
     } catch (err) {
       console.error('AI call failed:', err);
       const errorMsg: Message = {
         id: `err-${Date.now()}`,
         type: 'ai',
-        text: "I'm having trouble connecting right now, but I can tell that what you shared matters. Try again in a moment! 🌷",
+        text: "I'm having trouble connecting right now, but I can tell that what you shared matters. Try again in a moment! \u{1F337}",
         timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -147,7 +197,9 @@ export default function ChatView({ onSkillCollected }: ChatViewProps) {
                 </div>
                 <div>
                   <div className="bg-lavender/70 rounded-2xl rounded-tl-md px-4 py-3">
-                    <p className="text-sm text-text leading-relaxed">{msg.text}</p>
+                    <p className="text-sm text-text leading-relaxed">
+                      {msg.id === 'welcome' ? welcomeAnimated : msg.text}
+                    </p>
                   </div>
                   <p className="text-[10px] text-text-muted mt-1 ml-1">{msg.timestamp}</p>
                 </div>
@@ -169,7 +221,7 @@ export default function ChatView({ onSkillCollected }: ChatViewProps) {
               <div className="ml-10 mr-2">
                 <SkillCard
                   skill={msg.skill}
-                  onCollect={() => onSkillCollected()}
+                  onCollect={() => handleCollect(msg)}
                   delay={100}
                 />
               </div>

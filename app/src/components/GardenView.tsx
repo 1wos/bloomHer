@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import type { SkillRecord } from '../services/storage';
 
-// --- Mock Data ---
-const CURRENT_MONTH = new Date(2026, 3); // April 2026
-const DAYS_IN_MONTH = 30;
-const LOGGED_DAYS = [1, 2, 3, 5, 6, 7, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 30];
-const TOTAL_DAYS_LOGGED = 87;
-const TOTAL_SKILLS = 14;
+// --- Fallback Mock Data (first visit) ---
+const MOCK_LOGGED_DAYS = [1, 2, 3, 5, 6, 7, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 30];
+const MOCK_TOTAL_DAYS = 87;
+const MOCK_TOTAL_SKILLS = 14;
+const MOCK_LEVEL_INFO = { level: 4, label: 'Tree', emoji: '\u{1F333}', progress: 43 };
 
 // Growth stages based on total days logged
 const GROWTH_STAGES = [
@@ -20,19 +20,31 @@ function getGrowthStage(days: number) {
   return GROWTH_STAGES.find(s => days >= s.min && days <= s.max) || GROWTH_STAGES[0];
 }
 
-function getGrowthLevel(days: number) {
-  const idx = GROWTH_STAGES.findIndex(s => days >= s.min && days <= s.max);
-  return idx + 1;
-}
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-export default function GardenView() {
-  const stage = getGrowthStage(TOTAL_DAYS_LOGGED);
-  const level = getGrowthLevel(TOTAL_DAYS_LOGGED);
+interface GardenViewProps {
+  loggedDays: number[];
+  totalDays: number;
+  levelInfo: { level: number; label: string; emoji: string; progress: number };
+  allSkills: SkillRecord[];
+}
+
+export default function GardenView({ loggedDays, totalDays, levelInfo, allSkills }: GardenViewProps) {
+  // Use real data if available, fallback to mock for first visit
+  const hasData = totalDays > 0 || loggedDays.length > 0;
+  const LOGGED_DAYS = hasData ? loggedDays : MOCK_LOGGED_DAYS;
+  const TOTAL_DAYS_LOGGED = hasData ? totalDays : MOCK_TOTAL_DAYS;
+  const TOTAL_SKILLS = hasData ? allSkills.length : MOCK_TOTAL_SKILLS;
+
+  const CURRENT_MONTH = new Date();
+  const DAYS_IN_MONTH = new Date(CURRENT_MONTH.getFullYear(), CURRENT_MONTH.getMonth() + 1, 0).getDate();
+
+  const stage = hasData ? { ...getGrowthStage(TOTAL_DAYS_LOGGED), desc: getGrowthStage(TOTAL_DAYS_LOGGED).desc } : getGrowthStage(MOCK_TOTAL_DAYS);
+  const level = hasData ? levelInfo.level : MOCK_LEVEL_INFO.level;
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   // Progress to next stage
@@ -44,6 +56,7 @@ export default function GardenView() {
 
   // Calendar grid: first day of month offset
   const firstDayOfWeek = new Date(CURRENT_MONTH.getFullYear(), CURRENT_MONTH.getMonth(), 1).getDay();
+  const todayDate = new Date().getDate();
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -208,7 +221,7 @@ export default function GardenView() {
             const day = i + 1;
             const isLogged = LOGGED_DAYS.includes(day);
             const isSelected = selectedDay === day;
-            const isToday = day === 9; // mock: today is April 9
+            const isToday = day === todayDate;
             return (
               <button
                 key={day}
@@ -225,7 +238,7 @@ export default function GardenView() {
                 {isSelected ? (
                   <span className="text-white text-xs font-bold">{day}</span>
                 ) : isLogged ? (
-                  <span className="text-base">{['🌷', '🌸', '🌱', '💜', '✨'][day % 5]}</span>
+                  <span className="text-base">{['\u{1F337}', '\u{1F338}', '\u{1F331}', '\u{1F49C}', '\u2728'][day % 5]}</span>
                 ) : (
                   <span className="text-xs text-gray-300">{day}</span>
                 )}
@@ -243,13 +256,13 @@ export default function GardenView() {
             {LOGGED_DAYS.includes(selectedDay) ? (
               <p>
                 <span className="font-semibold" style={{ color: '#7B2D8E' }}>
-                  April {selectedDay}
+                  {MONTH_NAMES[CURRENT_MONTH.getMonth()]} {selectedDay}
                 </span>{' '}
                 — You reflected and grew {'\u{1F331}'}
               </p>
             ) : (
               <p style={{ color: '#7A7185' }}>
-                <span className="font-semibold">April {selectedDay}</span> — Rest day.{' '}
+                <span className="font-semibold">{MONTH_NAMES[CURRENT_MONTH.getMonth()]} {selectedDay}</span> — Rest day.{' '}
                 <span style={{ color: '#7B2D8E' }}>Rest days are growth too {'\u{1F49C}'}</span>
               </p>
             )}

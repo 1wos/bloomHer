@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import type { SkillRecord } from '../services/storage';
 
-// --- Mock Data ---
-interface Skill {
+// --- Fallback Mock Data (first visit) ---
+interface DisplaySkill {
   id: string;
   emoji: string;
   name: string;
@@ -10,7 +11,7 @@ interface Skill {
   lastDiscovered: string;
 }
 
-const SKILLS: Skill[] = [
+const MOCK_SKILLS: DisplaySkill[] = [
   { id: '1', emoji: '\u{1F9E0}', name: 'Problem Solving', category: 'Analytical', count: 12, lastDiscovered: '2026-04-09' },
   { id: '2', emoji: '\u{1F4AC}', name: 'Active Listening', category: 'Communication', count: 9, lastDiscovered: '2026-04-08' },
   { id: '3', emoji: '\u{1F451}', name: 'Decision Making', category: 'Leadership', count: 7, lastDiscovered: '2026-04-07' },
@@ -26,6 +27,27 @@ const SKILLS: Skill[] = [
   { id: '13', emoji: '\u{1F465}', name: 'Team Building', category: 'Leadership', count: 5, lastDiscovered: '2026-04-06' },
   { id: '14', emoji: '\u{1F50D}', name: 'Attention to Detail', category: 'Analytical', count: 8, lastDiscovered: '2026-04-09' },
 ];
+
+// Map category from storage format to display format
+const CATEGORY_DISPLAY_MAP: Record<string, string> = {
+  strategy: 'Analytical',
+  leadership: 'Leadership',
+  creativity: 'Creativity',
+  empathy: 'Empathy',
+  general: 'Communication',
+  resilience: 'Communication',
+};
+
+function mapStoredToDisplay(stored: SkillRecord[]): DisplaySkill[] {
+  return stored.map((s, i) => ({
+    id: `stored-${i}`,
+    emoji: s.icon,
+    name: s.name,
+    category: CATEGORY_DISPLAY_MAP[s.category] || 'Communication',
+    count: s.count,
+    lastDiscovered: s.lastDate,
+  }));
+}
 
 const CATEGORIES = ['All', 'Analytical', 'Communication', 'Leadership', 'Creativity', 'Empathy'];
 
@@ -45,11 +67,18 @@ function formatDate(dateStr: string) {
   return `${months[d.getMonth()]} ${d.getDate()}`;
 }
 
-export default function SkillsView() {
+interface SkillsViewProps {
+  allSkills: SkillRecord[];
+}
+
+export default function SkillsView({ allSkills }: SkillsViewProps) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortMode, setSortMode] = useState<SortMode>('frequent');
 
-  const maxCount = Math.max(...SKILLS.map(s => s.count));
+  // Use stored skills if available, fallback to mock
+  const SKILLS: DisplaySkill[] = allSkills.length > 0 ? mapStoredToDisplay(allSkills) : MOCK_SKILLS;
+
+  const maxCount = Math.max(...SKILLS.map(s => s.count), 1);
 
   const filtered = SKILLS
     .filter(s => selectedCategory === 'All' || s.category === selectedCategory)
@@ -66,7 +95,7 @@ export default function SkillsView() {
     count: SKILLS.filter(s => s.category === cat).reduce((sum, s) => sum + s.count, 0),
     color: CATEGORY_COLORS[cat],
   }));
-  const maxCatCount = Math.max(...categoryFreq.map(c => c.count));
+  const maxCatCount = Math.max(...categoryFreq.map(c => c.count), 1);
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -271,8 +300,8 @@ export default function SkillsView() {
               <span
                 className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
                 style={{
-                  backgroundColor: `${CATEGORY_COLORS[skill.category]}15`,
-                  color: CATEGORY_COLORS[skill.category],
+                  backgroundColor: `${CATEGORY_COLORS[skill.category] || '#9B6BB0'}15`,
+                  color: CATEGORY_COLORS[skill.category] || '#9B6BB0',
                 }}
               >
                 {skill.category}
@@ -291,7 +320,7 @@ export default function SkillsView() {
                   className="h-full rounded-full transition-all duration-500"
                   style={{
                     width: `${(skill.count / maxCount) * 100}%`,
-                    backgroundColor: CATEGORY_COLORS[skill.category],
+                    backgroundColor: CATEGORY_COLORS[skill.category] || '#9B6BB0',
                   }}
                 />
               </div>

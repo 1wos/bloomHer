@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTypewriter } from '../hooks/useTypewriter';
 
 // --- Mock Data ---
 const WEEKLY_DATA = {
@@ -30,6 +31,8 @@ interface CardProps {
 }
 
 function Card1({ isActive }: CardProps) {
+  const grewInText = useTypewriter('You grew in...', { speed: 30, enabled: isActive });
+
   return (
     <div
       className="w-full h-full rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden"
@@ -41,7 +44,7 @@ function Card1({ isActive }: CardProps) {
       <div className="relative z-10">
         <p className="text-white/60 text-sm font-medium mb-2">This week</p>
         <h2 className="text-3xl font-bold text-white leading-tight">
-          You grew in...
+          {grewInText}
         </h2>
       </div>
 

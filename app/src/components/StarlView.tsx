@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import type { STARLResult } from '../types';
 import { structureSTARL } from '../services/ai';
+import { useTypewriter } from '../hooks/useTypewriter';
 
 export default function StarlView() {
   const [userInput, setUserInput] = useState('');
@@ -38,6 +39,11 @@ export default function StarlView() {
     setUserInput('');
     setResult(null);
   };
+
+  const animatedSummary = useTypewriter(result?.oneLineSummary ?? '', {
+    speed: 30,
+    enabled: !!result,
+  });
 
   const handleShareAsCard = () => {
     if (!result) return;
@@ -146,7 +152,7 @@ Powered by BloomHer 🌷`.trim();
               Your Story in One Sentence
             </p>
             <p className="text-lg font-medium italic leading-relaxed">
-              "{result.oneLineSummary}"
+              "{animatedSummary}"
             </p>
           </div>
 

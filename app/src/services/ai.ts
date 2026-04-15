@@ -107,7 +107,7 @@ function detectProvider(): AIProvider {
 async function callGemini(systemPrompt: string, userMessage: string): Promise<string> {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -289,7 +289,10 @@ export async function generateWeeklyReport(entries: Entry[]): Promise<WeeklyRepo
  * Structure a STAR(L) experience using AI enhancement.
  */
 export async function structureSTARL(experience: STARLInput): Promise<STARLResult> {
-  const userMessage = `Here is my experience in STAR(L) format:
+  const hasFullSTARL = experience.task || experience.action || experience.result || experience.learned;
+
+  const userMessage = hasFullSTARL
+    ? `Here is my experience in STAR(L) format:
 
 S (Situation): ${experience.situation}
 T (Task): ${experience.task}
@@ -297,7 +300,18 @@ A (Action): ${experience.action}
 R (Result): ${experience.result}
 L (Learned): ${experience.learned}
 
-Please enhance this, discover hidden skills, and create a powerful one-sentence summary.`;
+Please enhance this, discover hidden skills, and create a powerful one-sentence summary.`
+    : `Here is a raw experience I want structured into STAR(L) format:
+
+"${experience.situation}"
+
+INSTRUCTIONS:
+1. Infer and fill out ALL FIVE parts (Situation, Task, Action, Result, Learned) from this single description.
+2. If some parts aren't explicit, thoughtfully reconstruct them from context — stay grounded in what the user said, never invent facts.
+3. "Learned" must be an empowering metacognitive insight about her strength or growth (NOT just a takeaway).
+4. Every field must have 1-2 sentences of concrete content. NEVER leave a field empty.
+5. Discover 3-5 hidden skills demonstrated by this experience.
+6. Write the one-line summary so she could use it verbatim in an interview or cover letter.`;
 
   const raw = await callAI(STARL_SYSTEM_PROMPT, userMessage);
 

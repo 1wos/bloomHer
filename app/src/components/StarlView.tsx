@@ -2,11 +2,17 @@ import { useState, useRef } from 'react';
 import type { STARLResult } from '../types';
 import { structureSTARL } from '../services/ai';
 import { useTypewriter } from '../hooks/useTypewriter';
+import { collectSkill, addEntry } from '../services/storage';
 
-export default function StarlView() {
+interface StarlViewProps {
+  onSkillCollected?: () => void;
+}
+
+export default function StarlView({ onSkillCollected }: StarlViewProps = {}) {
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState<STARLResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
@@ -38,6 +44,34 @@ export default function StarlView() {
   const handleReset = () => {
     setUserInput('');
     setResult(null);
+    setSaved(false);
+  };
+
+  const handleSaveToGarden = () => {
+    if (!result || saved) return;
+    const skillEmojis = ['💎', '⭐', '🌟', '✨', '💫'];
+    result.skillsDiscovered.forEach((skill, i) => {
+      collectSkill(
+        skill.name,
+        skillEmojis[i % skillEmojis.length],
+        skill.explanation,
+        userInput,
+        'general'
+      );
+    });
+    addEntry({
+      id: `starl_${Date.now()}`,
+      date: new Date().toISOString().split('T')[0],
+      input: userInput,
+      skills: result.skillsDiscovered.map((s, i) => ({
+        name: s.name,
+        icon: skillEmojis[i % skillEmojis.length],
+        description: s.explanation,
+      })),
+      type: 'starl',
+    });
+    setSaved(true);
+    onSkillCollected?.();
   };
 
   const animatedSummary = useTypewriter(result?.oneLineSummary ?? '', {
@@ -70,118 +104,214 @@ Powered by BloomHer 🌷`.trim();
   // --- Result View ---
   if (result) {
     const STEPS = [
-      { letter: 'S', label: 'Situation', key: 'situation' as const },
-      { letter: 'T', label: 'Task', key: 'task' as const },
-      { letter: 'A', label: 'Action', key: 'action' as const },
-      { letter: 'R', label: 'Result', key: 'result' as const },
-      { letter: 'L', label: 'Learned', key: 'learned' as const },
+      { letter: 'S', label: 'Situation', key: 'situation' as const, emoji: '🌱', tint: '#7B2D8E' },
+      { letter: 'T', label: 'Task', key: 'task' as const, emoji: '🎯', tint: '#8E3AA0' },
+      { letter: 'A', label: 'Action', key: 'action' as const, emoji: '⚡', tint: '#A249B2' },
+      { letter: 'R', label: 'Result', key: 'result' as const, emoji: '🌸', tint: '#BF5AC0' },
+      { letter: 'L', label: 'Learned', key: 'learned' as const, emoji: '✨', tint: '#D946A8' },
     ];
 
     return (
-      <div className="min-h-screen bg-[#F3E8FF]/30 py-8 px-4 pb-28">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#7B2D8E] mb-2">
-              Your STAR(L) Story
-            </h1>
-            <p className="text-gray-500">
-              AI discovered your hidden skills
-            </p>
+      <div className="min-h-screen bg-[#FAF5FF] pb-28">
+        {/* Hero header */}
+        <div
+          className="px-5 pt-10 pb-8 text-center relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #7B2D8E 0%, #9B4DB0 50%, #D946A8 100%)' }}
+        >
+          <div className="relative z-10">
+            <span className="text-4xl block mb-2">🌷</span>
+            <h1 className="text-2xl font-bold text-white mb-1">Your STAR(L) Story</h1>
+            <p className="text-sm text-white/80">AI discovered your hidden skills</p>
           </div>
+          <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
+        </div>
 
+        <div className="max-w-2xl mx-auto px-4 -mt-4">
           {/* What you shared */}
-          <div className="bg-[#F3E8FF]/50 rounded-2xl p-4 mb-6 border border-[#7B2D8E]/10">
-            <p className="text-sm text-[#7B2D8E]/60 mb-1">You shared:</p>
-            <p className="text-gray-700 italic">"{userInput}"</p>
+          <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm border border-[#7B2D8E]/10">
+            <p className="text-xs uppercase tracking-wider text-[#7B2D8E]/60 mb-1 font-semibold">You shared</p>
+            <p className="text-gray-700 italic text-sm leading-relaxed">"{userInput}"</p>
           </div>
 
-          {/* Structured result */}
+          {/* STAR(L) timeline */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-[#7B2D8E]/10">
-            {STEPS.map((s) => (
-              <div key={s.key} className="mb-5 last:mb-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-sm"
+            <div className="relative">
+              {/* Vertical connecting line */}
+              <div
+                className="absolute left-[19px] top-4 bottom-4 w-0.5"
+                style={{ background: 'linear-gradient(to bottom, #7B2D8E, #D946A8)' }}
+              />
+
+              {STEPS.map((s, i) => (
+                <div
+                  key={s.key}
+                  className="relative pl-14 pb-6 last:pb-0 transition-all duration-500"
+                  style={{
+                    opacity: 1,
+                    animation: `fadeInUp 0.5s ease-out ${i * 100}ms both`,
+                  }}
+                >
+                  {/* Letter badge */}
+                  <div
+                    className="absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-md"
                     style={{
-                      background:
-                        s.key === 'learned'
-                          ? 'linear-gradient(135deg, #7B2D8E, #D946A8)'
-                          : '#7B2D8E',
+                      background: `linear-gradient(135deg, ${s.tint}, ${STEPS[Math.min(i + 1, STEPS.length - 1)].tint})`,
                     }}
                   >
                     {s.letter}
-                  </span>
-                  <span className="font-semibold text-[#7B2D8E]">{s.label}</span>
+                  </div>
+
+                  {/* Label row */}
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-base">{s.emoji}</span>
+                    <span className="font-bold text-[#7B2D8E] text-sm uppercase tracking-wide">
+                      {s.label}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <p className="text-gray-700 leading-relaxed text-[15px]">
+                    {result.structured[s.key]}
+                  </p>
                 </div>
-                <p className="text-gray-700 leading-relaxed pl-10">
-                  {result.structured[s.key]}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Skills discovered */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-[#7B2D8E]/20">
-            <h2 className="text-xl font-bold text-[#7B2D8E] mb-4 flex items-center gap-2">
-              <span className="text-2xl">🎯</span> Skills Discovered
-            </h2>
+          {/* One-liner — HERO money shot */}
+          <div
+            className="rounded-3xl p-8 mb-6 text-white relative overflow-hidden shadow-xl"
+            style={{ background: 'linear-gradient(135deg, #5A1A6B 0%, #7B2D8E 40%, #D946A8 100%)' }}
+          >
+            <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/10 blur-3xl -mr-20 -mt-20" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-white/10 blur-3xl -ml-16 -mb-16" />
+            <div className="relative z-10 text-center">
+              <span className="text-3xl block mb-3">💫</span>
+              <p className="text-[11px] uppercase tracking-[0.2em] mb-3 opacity-80 font-semibold">
+                Your Story in One Line
+              </p>
+              <p className="text-xl font-semibold italic leading-relaxed">
+                "{animatedSummary}"
+              </p>
+            </div>
+          </div>
+
+          {/* Skills discovered — chip style */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-[#7B2D8E]/10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xl">🎯</span>
+              <h2 className="text-base font-bold text-[#7B2D8E] uppercase tracking-wide">
+                Skills Discovered
+              </h2>
+              <span className="ml-auto bg-[#F3E8FF] text-[#7B2D8E] text-xs font-bold px-2 py-0.5 rounded-full">
+                {result.skillsDiscovered.length}
+              </span>
+            </div>
             <div className="grid gap-3">
               {result.skillsDiscovered.map((skill, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 bg-[#F3E8FF]/50 rounded-xl p-4"
+                  className="flex items-start gap-3 rounded-xl p-4 border border-[#7B2D8E]/10 hover:border-[#7B2D8E]/30 hover:shadow-md transition-all"
+                  style={{
+                    background: `linear-gradient(135deg, #F3E8FF 0%, #FFFFFF 100%)`,
+                    animation: `fadeInUp 0.5s ease-out ${(STEPS.length + i) * 100}ms both`,
+                  }}
                 >
-                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#9B6BB0] text-white text-sm font-bold shrink-0 mt-0.5">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <span className="font-semibold text-[#7B2D8E]">{skill.name}</span>
-                    <p className="text-gray-600 text-sm mt-0.5">{skill.explanation}</p>
+                  <div
+                    className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm"
+                    style={{
+                      background: `linear-gradient(135deg, #9B6BB0, #D946A8)`,
+                    }}
+                  >
+                    {['💎', '⭐', '🌟', '✨', '💫'][i % 5]}
+                  </div>
+                  <div className="flex-1">
+                    <span className="font-bold text-[#7B2D8E]">{skill.name}</span>
+                    <p className="text-gray-600 text-sm mt-1 leading-relaxed">{skill.explanation}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* One-liner */}
-          <div
-            className="rounded-2xl p-6 mb-6 text-white"
-            style={{ background: 'linear-gradient(135deg, #7B2D8E, #D946A8)' }}
-          >
-            <p className="text-sm uppercase tracking-wider mb-2 opacity-80">
-              Your Story in One Sentence
-            </p>
-            <p className="text-lg font-medium italic leading-relaxed">
-              "{animatedSummary}"
-            </p>
-          </div>
-
           {/* Metacognitive question */}
           {result.metacognitiveQuestion && (
-            <div className="bg-[#F3E8FF] rounded-2xl p-5 mb-8 border border-[#7B2D8E]/10">
-              <p className="text-[#7B2D8E] italic text-center">
-                💭 {result.metacognitiveQuestion}
+            <div
+              className="rounded-2xl p-5 mb-8 border"
+              style={{
+                background: 'linear-gradient(135deg, #F3E8FF 0%, #FFE8F5 100%)',
+                borderColor: 'rgba(123, 45, 142, 0.15)',
+              }}
+            >
+              <p className="text-[#7B2D8E] italic text-center leading-relaxed">
+                <span className="block text-2xl mb-2">💭</span>
+                {result.metacognitiveQuestion}
               </p>
             </div>
           )}
 
-          {/* Actions */}
-          <div className="flex gap-3 justify-center">
+          {/* Actions — Save is PRIMARY */}
+          <div className="space-y-3">
             <button
-              onClick={handleShareAsCard}
-              className="px-6 py-3 text-white rounded-xl font-medium hover:opacity-90 transition-colors shadow-md"
-              style={{ background: 'linear-gradient(135deg, #7B2D8E, #D946A8)' }}
+              onClick={handleSaveToGarden}
+              disabled={saved}
+              className={`w-full px-6 py-4 rounded-2xl font-bold text-base transition-all shadow-md ${
+                saved
+                  ? 'bg-[#E8F5E9] text-[#2E7D32] cursor-default'
+                  : 'text-white hover:shadow-xl hover:-translate-y-0.5'
+              }`}
+              style={
+                saved
+                  ? {}
+                  : { background: 'linear-gradient(135deg, #7B2D8E, #D946A8)' }
+              }
             >
-              Share as Card
+              {saved ? (
+                <span className="flex items-center justify-center gap-2">
+                  ✓ Saved to Your Garden
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  🌷 Save {result.skillsDiscovered.length} Skill{result.skillsDiscovered.length > 1 ? 's' : ''} to My Garden
+                </span>
+              )}
             </button>
-            <button
-              onClick={handleReset}
-              className="px-6 py-3 bg-white text-[#7B2D8E] rounded-xl font-medium border-2 border-[#7B2D8E]/30 hover:border-[#7B2D8E] transition-colors"
-            >
-              Try Another
-            </button>
+            {saved && (
+              <p className="text-center text-xs text-[#7B2D8E]/70">
+                Check the Skills and Garden tabs to see your growth ✨
+              </p>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleShareAsCard}
+                className="flex-1 px-4 py-3 bg-white text-[#7B2D8E] rounded-xl font-semibold border border-[#7B2D8E]/20 hover:border-[#7B2D8E] hover:bg-[#F3E8FF]/50 transition-all text-sm"
+              >
+                📋 Copy Card
+              </button>
+              <button
+                onClick={handleReset}
+                className="flex-1 px-4 py-3 bg-white text-[#7B2D8E] rounded-xl font-semibold border border-[#7B2D8E]/20 hover:border-[#7B2D8E] hover:bg-[#F3E8FF]/50 transition-all text-sm"
+              >
+                ↻ Try Another
+              </button>
+            </div>
           </div>
         </div>
+
+        <style>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(8px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </div>
     );
   }

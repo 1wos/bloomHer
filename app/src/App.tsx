@@ -69,7 +69,7 @@ export default function App() {
 
         {activePage === 'star' && (
           <div className="h-full overflow-y-auto">
-            <StarlView />
+            <StarlView onSkillCollected={refreshData} />
           </div>
         )}
       </div>

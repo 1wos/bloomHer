@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .split {
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 22pt;
+      flex: 1; margin-top: 6pt;
+    }
+    .diagram-side {
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .diagram-img {
+      max-width: 100%; max-height: 260pt;
+      width: auto; height: auto;
+      object-fit: contain;
+    }
+    .diagram-side {
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center;
+    }
+    .explain-side {
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 8pt;
+    }
+    .explain-header {
+      font-size: 7.5pt; font-weight: 700; letter-spacing: 1pt;
+      color: #7B2D8E; margin-bottom: 4pt;
+    }
+    .agent-card {
+      padding: 9pt 13pt;
+      border-radius: 10pt;
+      background: linear-gradient(135deg, #F3E8FF 0%, #FDF5FD 100%);
+      box-shadow: 0 2pt 10pt rgba(123,45,142,0.08);
+    }
+    .agent-card.agent-1 {
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFFDF5 100%);
+    }
+    .agent-title {
+      font-family: 'Fraunces', serif;
+      font-size: 12pt; font-weight: 500;
+      color: #1A0F2E; letter-spacing: -0.3pt;
+      margin-bottom: 2pt;
+    }
+    .agent-sub {
+      font-size: 7pt; color: #9683A8; font-style: italic;
+      text-transform: uppercase; letter-spacing: 0.6pt;
+      margin-bottom: 5pt;
+    }
+    .agent-q {
+      font-size: 9pt; color: #4A3860; line-height: 1.35;
+      font-family: 'Fraunces', serif; font-style: italic;
+    }
+    .citation-bar {
+      margin-top: 4pt; padding: 7pt 11pt;
+      background: #F3E8FF; border-radius: 7pt;
+      font-size: 8pt; color: #4A3860; line-height: 1.4;
+    }
+    .citation-bar b { color: #7B2D8E; }
+    .technique-badges {
+      display: flex; gap: 4pt; flex-wrap: wrap; margin-top: 4pt;
+    }
+    .badge {
+      display: inline-block; padding: 2pt 6pt;
+      background: #F3E8FF; border: 1px solid #C99AD9;
+      border-radius: 9pt; font-size: 6.5pt; font-weight: 700;
+      color: #7B2D8E; letter-spacing: 0.4pt;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · PROMPT 2 OF 3</span>
+  </div>
+
+  <p class="kicker-label">PROMPT 2 — WEEKLY REPORT VIA MULTI-AGENT DEBATE</p>
+  <h1 class="slide-title" style="font-size: 17pt;">Two AI perspectives debate. <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">One insight emerges.</em></h1>
+  <div class="technique-badges">
+    <span class="badge">MULTI-AGENT DEBATE</span>
+    <span class="badge">SELF-REFLECTION</span>
+    <span class="badge">COSTAR-A</span>
+    <span class="badge">PATTERN RECOGNITION</span>
+  </div>
+
+  <div class="split">
+    <div class="diagram-side">
+      <img class="diagram-img" src="assets/multi_agent.png" alt="Multi-Agent Debate diagram"/>
+    </div>
+
+    <div class="explain-side">
+      <div>
+        <div class="explain-header">HOW IT WORKS</div>
+        <p style="font-size:9pt;color:#4A3860;line-height:1.4;">
+          Before generating the report, the model <b>debates internally</b> between two personas — then synthesizes.
+        </p>
+      </div>
+
+      <div class="agent-card agent-1">
+        <div class="agent-title">Agent 1 — Growth Coach</div>
+        <div class="agent-sub">Encourager</div>
+        <div class="agent-q">"What deserves celebration? Which skills showed up repeatedly?"</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-title">Agent 2 — Pattern Analyst</div>
+        <div class="agent-sub">Detective</div>
+        <div class="agent-q">"What hidden strength is emerging that she hasn't noticed herself?"</div>
+      </div>
+
+      <div class="citation-bar">
+        <b>Based on:</b> Du et al. (2023) — <i>"Improving Factuality and Reasoning via Multi-Agent Debate"</i>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 06 · PROMPT 2 — MULTI-AGENT DEBATE</span>
+    <span class="page-num-small">06 / 15</span>
+  </div>
+</body>
+</html>

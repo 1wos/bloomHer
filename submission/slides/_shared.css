@@ -1,0 +1,54 @@
+/* Reusable styles for all non-cover slides */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 720pt;
+  height: 405pt;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: #1A0F2E;
+  background: #FAF5FF;
+  padding: 12pt 40pt 12pt 40pt;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.slide-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6pt;
+}
+.brand-small {
+  display: flex; align-items: center; gap: 6pt;
+  font-size: 9pt; font-weight: 700; letter-spacing: 1.2pt; color: #7B2D8E;
+}
+.brand-dot-small {
+  width: 6pt; height: 6pt; border-radius: 50%; background: #7B2D8E;
+}
+.challenge-chip {
+  display: inline-block; padding: 3pt 9pt;
+  background: #F3E8FF; border: 1px solid rgba(123,45,142,0.2);
+  border-radius: 11pt; font-size: 7pt; font-weight: 700;
+  color: #7B2D8E; letter-spacing: 0.8pt;
+}
+.page-num-small {
+  font-size: 8pt; font-weight: 500; color: #B8A5C9;
+}
+.slide-title {
+  font-family: 'Fraunces', serif;
+  font-size: 19pt; font-weight: 500; line-height: 1.12;
+  letter-spacing: -0.6pt; color: #1A0F2E;
+  margin-bottom: 4pt;
+}
+.slide-subtitle {
+  font-size: 9pt; font-weight: 400; color: #6B5581;
+  line-height: 1.4; max-width: 620pt;
+}
+.slide-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: auto; padding-top: 8pt;
+  border-top: 1px solid #E8DAEF;
+  font-size: 7pt; color: #9683A8; letter-spacing: 0.4pt;
+}
+.kicker-label {
+  font-size: 7pt; font-weight: 700; letter-spacing: 1.2pt; color: #7B2D8E;
+  margin-bottom: 3pt; text-transform: uppercase;
+}

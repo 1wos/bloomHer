@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .paper-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr);
+      gap: 8pt; flex: 1; margin-top: 10pt;
+    }
+    .paper-card {
+      padding: 10pt 12pt;
+      background: #fff;
+      border-radius: 9pt;
+      border: 1px solid #EBD9F2;
+      box-shadow: 0 1pt 3pt rgba(123,45,142,0.04);
+      display: flex; flex-direction: column;
+    }
+    .paper-card.original {
+      background: linear-gradient(135deg, #7B2D8E 0%, #D946A8 100%);
+      color: #fff; border: none;
+      box-shadow: 0 4pt 20pt rgba(123,45,142,0.18);
+    }
+    .paper-number {
+      display: inline-block;
+      width: 18pt; height: 18pt; border-radius: 50%;
+      background: #F3E8FF; color: #7B2D8E;
+      font-family: 'Fraunces', serif; font-weight: 600;
+      font-size: 9pt;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-bottom: 4pt;
+    }
+    .paper-card.original .paper-number {
+      background: rgba(255,255,255,0.25); color: #fff;
+    }
+    .paper-technique {
+      font-size: 11pt; font-weight: 600; color: #1A0F2E;
+      font-family: 'Fraunces', serif; letter-spacing: -0.3pt;
+      line-height: 1.15; margin-bottom: 3pt;
+    }
+    .paper-card.original .paper-technique {
+      color: #fff;
+    }
+    .paper-citation {
+      font-size: 8pt; font-style: italic; color: #7B2D8E;
+      font-family: 'Fraunces', serif; font-weight: 500;
+      margin-bottom: 5pt;
+    }
+    .paper-card.original .paper-citation {
+      color: #FFE5F5;
+    }
+    .paper-purpose {
+      font-size: 7.5pt; color: #6B5581; line-height: 1.4;
+      margin-top: auto;
+    }
+    .paper-card.original .paper-purpose {
+      color: rgba(255,255,255,0.92);
+    }
+    .paper-purpose b { color: #7B2D8E; }
+    .paper-card.original .paper-purpose b { color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · RESEARCH GROUNDING</span>
+  </div>
+
+  <p class="kicker-label">EVERY TECHNIQUE IS PUBLISHED RESEARCH</p>
+  <h1 class="slide-title" style="font-size: 17pt;">Not vibes. <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">Literature.</em></h1>
+  <p class="slide-subtitle">
+    Each prompting technique cites a specific paper or framework — grounding design decisions in evidence.
+  </p>
+
+  <div class="paper-grid">
+    <div class="paper-card">
+      <div class="paper-number">1</div>
+      <div class="paper-technique">COSTAR-A Framework</div>
+      <div class="paper-citation">arXiv 2510.12637 (2025)</div>
+      <div class="paper-purpose">Adaptive prompt framework — <b>Context, Objective, Style, Tone, Audience, Response + Answer</b>. Ensures completeness and output shape control.</div>
+    </div>
+
+    <div class="paper-card">
+      <div class="paper-number">2</div>
+      <div class="paper-technique">Multi-Agent Debate</div>
+      <div class="paper-citation">Du, Li, Torralba, Tenenbaum, Mordatch — 2023</div>
+      <div class="paper-purpose">Two agents debate internally before responding. Shown to <b>improve factuality and reasoning</b> — applied to our Weekly Report.</div>
+    </div>
+
+    <div class="paper-card">
+      <div class="paper-number">3</div>
+      <div class="paper-technique">Metacognitive Prompting</div>
+      <div class="paper-citation">Mazari — 2025</div>
+      <div class="paper-purpose">Activates <b>self-reflection</b> in both model and user. We use it for reflective questions + the "L (Learned)" extension.</div>
+    </div>
+
+    <div class="paper-card">
+      <div class="paper-number">4</div>
+      <div class="paper-technique">Chain-of-Thought</div>
+      <div class="paper-citation">Wei et al. — NeurIPS 2022</div>
+      <div class="paper-purpose">Step-by-step internal reasoning. Our Prompt 1 uses an <b>explicit 4-step chain</b> before producing output.</div>
+    </div>
+
+    <div class="paper-card">
+      <div class="paper-number">5</div>
+      <div class="paper-technique">Few-Shot Learning</div>
+      <div class="paper-citation">Brown et al. — "Language Models are Few-Shot Learners" — NeurIPS 2020</div>
+      <div class="paper-purpose">Provide 2-3 grounded examples so the model mirrors the target format. Critical for STAR(L) auto-structuring.</div>
+    </div>
+
+    <div class="paper-card original">
+      <div class="paper-number">6</div>
+      <div class="paper-technique">STAR(L) — Original Extension</div>
+      <div class="paper-citation">Han, S. — 2026 (this project)</div>
+      <div class="paper-purpose">Classic STAR + <b>"L" for Learned</b>. Turns interview structuring into a metacognitive growth tool.</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 09 · RESEARCH GROUNDING</span>
+    <span class="page-num-small">09 / 15</span>
+  </div>
+</body>
+</html>

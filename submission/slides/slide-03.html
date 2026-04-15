@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14pt;
+      margin-top: 14pt; flex: 1;
+    }
+    .card {
+      padding: 18pt 20pt; border-radius: 12pt;
+      display: flex; flex-direction: column;
+    }
+    .card-naive {
+      background: #F5F3F7; border: 1px solid #E2D9EB;
+    }
+    .card-ours {
+      background: linear-gradient(150deg, #7B2D8E 0%, #A24BAC 100%);
+      color: #fff;
+      box-shadow: 0 6pt 20pt rgba(123,45,142,0.18);
+    }
+    .card-header {
+      font-size: 8pt; font-weight: 700; letter-spacing: 1pt;
+      margin-bottom: 6pt;
+    }
+    .card-naive .card-header { color: #8A7998; }
+    .card-ours .card-header { color: rgba(255,255,255,0.75); }
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 16pt; font-weight: 500; line-height: 1.2;
+      margin-bottom: 14pt; letter-spacing: -0.3pt;
+    }
+    .card-naive .card-title { color: #4A3860; }
+    .card-ours .card-title { color: #fff; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 10pt; }
+    .bullet-list li {
+      font-size: 10pt; line-height: 1.45; padding-left: 18pt;
+      position: relative; font-weight: 400;
+    }
+    .card-naive .bullet-list li { color: #6B5581; }
+    .card-ours .bullet-list li { color: rgba(255,255,255,0.92); }
+    .bullet-list li::before {
+      content: ''; position: absolute; left: 0; top: 5pt;
+      width: 10pt; height: 1.5pt;
+    }
+    .card-naive .bullet-list li::before { background: #B09BC2; }
+    .card-ours .bullet-list li::before { background: #FFC4E3; }
+    .bullet-list li b {
+      font-weight: 600;
+    }
+    .card-ours .bullet-list li b {
+      color: #FFE5F5;
+    }
+    .insight-bar {
+      margin-top: 12pt; padding: 10pt 14pt;
+      background: #fff; border: 1px solid #EBD9F2; border-radius: 10pt;
+      font-size: 10pt; color: #4A3860; text-align: center;
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    }
+    .insight-bar b { color: #7B2D8E; font-style: normal; }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · APPROACH</span>
+  </div>
+
+  <p class="kicker-label">WHY PROMPT ENGINEERING MATTERS</p>
+  <h1 class="slide-title">This isn't a chatbot wrapper.</h1>
+  <p class="slide-subtitle">
+    We engineered three prompts through v1 → v3 iterations, applying five research-backed techniques.
+  </p>
+
+  <div class="compare">
+    <div class="card card-naive">
+      <div class="card-header">NAIVE "AI JOURNAL"</div>
+      <div class="card-title">One prompt,<br/>generic output</div>
+      <ul class="bullet-list">
+        <li><b>"That's nice!"</b> generic praise</li>
+        <li>One-shot response, no reasoning chain</li>
+        <li>Single-perspective interpretation</li>
+        <li>No framework, no iteration, no research</li>
+      </ul>
+    </div>
+
+    <div class="card card-ours">
+      <div class="card-header">BLOOMHER</div>
+      <div class="card-title">Three engineered prompts,<br/>five stacked techniques</div>
+      <ul class="bullet-list">
+        <li>Specific skill detection with <b>named competencies</b></li>
+        <li><b>Chain-of-Thought</b> reasoning over 4 steps</li>
+        <li><b>Multi-Agent Debate</b> for deeper pattern discovery</li>
+        <li>Grounded in <b>COSTAR-A + Metacognitive Prompting</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="insight-bar">
+    Quality of the <b>prompt</b>&nbsp;&nbsp;=&nbsp;&nbsp;Quality of the <b>outcome.</b>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 03 · WHY PROMPT ENGINEERING</span>
+    <span class="page-num-small">03 / 15</span>
+  </div>
+</body>
+</html>

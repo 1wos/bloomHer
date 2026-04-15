@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .demo-grid {
+      display: grid; grid-template-columns: 150pt 1fr; gap: 22pt;
+      flex: 1; align-items: center; margin-top: 4pt;
+    }
+    .phone-wrap {
+      display: flex; justify-content: center; align-items: center;
+    }
+    .phone-screen {
+      height: 280pt; width: auto;
+      border-radius: 16pt;
+      box-shadow: 0 10pt 40pt rgba(74,17,89,0.28);
+      border: 2pt solid rgba(255,255,255,0.7);
+    }
+    .demo-right {
+      display: flex; flex-direction: column; gap: 12pt;
+    }
+    .chat-bubble {
+      padding: 9pt 12pt;
+      border-radius: 12pt;
+      max-width: 420pt;
+      font-size: 10pt;
+      line-height: 1.35;
+    }
+    .user-bubble {
+      background: linear-gradient(135deg, #7B2D8E 0%, #D946A8 100%);
+      color: #fff; align-self: flex-end;
+      border-bottom-right-radius: 3pt;
+      font-family: 'Fraunces', serif; font-style: italic;
+    }
+    .user-label {
+      font-family: 'Inter', sans-serif; font-size: 7pt;
+      font-weight: 700; letter-spacing: 0.8pt; font-style: normal;
+      color: rgba(255,255,255,0.7); margin-bottom: 4pt;
+    }
+    .ai-bubble {
+      background: #F3E8FF;
+      color: #4A3860;
+      border: 1px solid #E0C8EB;
+      border-bottom-left-radius: 3pt;
+    }
+    .ai-label {
+      font-size: 7pt; font-weight: 700; letter-spacing: 0.8pt;
+      color: #7B2D8E; margin-bottom: 4pt;
+    }
+    .ai-intro {
+      font-size: 9pt; margin-bottom: 4pt; line-height: 1.3;
+    }
+    .discovered-skill {
+      display: flex; gap: 6pt; padding: 4pt 0;
+      border-top: 1px dashed #D0B8DB; font-size: 8.5pt; line-height: 1.3;
+    }
+    .discovered-skill:first-of-type { border-top: none; padding-top: 2pt; }
+    .skill-name-strong {
+      font-weight: 600; color: #7B2D8E;
+      flex-shrink: 0;
+    }
+    .reflective-q {
+      margin-top: 4pt; padding-top: 4pt; border-top: 1px dashed #D0B8DB;
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 8.5pt; color: #7B2D8E;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · RESULTS · DEMO 1</span>
+  </div>
+
+  <p class="kicker-label">LIVE DEMO — DAILY DISCOVERY IN ACTION</p>
+  <h1 class="slide-title" style="font-size: 17pt;">From a single sentence <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">to three named skills.</em></h1>
+
+  <div class="demo-grid">
+    <div class="phone-wrap">
+      <img class="phone-screen" src="assets/01_home_chat.png" alt="Chat screen"/>
+    </div>
+
+    <div class="demo-right">
+      <div class="chat-bubble user-bubble">
+        <div class="user-label">USER INPUT · 30 SECONDS</div>
+        "I helped my classmate understand a difficult concept and saw her confidence grow."
+      </div>
+
+      <div class="chat-bubble ai-bubble">
+        <div class="ai-label">BLOOMHER · POWERED BY GPT-4 (AZURE OPENAI)</div>
+        <div class="ai-intro">
+          What you shared shows real strength. Every small action builds something bigger — and you are building more than you realize.
+        </div>
+
+        <div class="discovered-skill">
+          <span class="skill-name-strong">Empathetic Explainer</span>
+          <span>You tuned into her struggle, simplified the concept, tailored your delivery.</span>
+        </div>
+        <div class="discovered-skill">
+          <span class="skill-name-strong">Confidence Cultivator</span>
+          <span>Her growing confidence is evidence you created a supportive learning environment.</span>
+        </div>
+        <div class="discovered-skill">
+          <span class="skill-name-strong">Adaptive Problem-Solver</span>
+          <span>You kept adjusting your approach until it clicked — creative flexibility.</span>
+        </div>
+
+        <div class="reflective-q">
+          "Did you realize that kindness uses the same skills as mentoring?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 10 · DEMO 1 — DAILY DISCOVERY</span>
+    <span class="page-num-small">10 / 15</span>
+  </div>
+</body>
+</html>

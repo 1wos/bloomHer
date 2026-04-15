@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .demo-grid {
+      display: grid; grid-template-columns: 1fr 160pt 1fr; gap: 18pt;
+      flex: 1; align-items: center; margin-top: 4pt;
+    }
+    .phone-wrap {
+      display: flex; justify-content: center; align-items: center;
+    }
+    .phone-screen {
+      height: 280pt; width: auto;
+      border-radius: 16pt;
+      box-shadow: 0 10pt 40pt rgba(74,17,89,0.28);
+      border: 2pt solid rgba(255,255,255,0.7);
+    }
+    .side-panel {
+      display: flex; flex-direction: column; gap: 8pt;
+    }
+    .panel-label {
+      font-size: 7pt; font-weight: 700; letter-spacing: 0.8pt;
+      color: #7B2D8E;
+    }
+    .raw-input-box {
+      padding: 9pt 13pt;
+      background: linear-gradient(135deg, #F3E8FF 0%, #FDF5FD 100%);
+      border-radius: 9pt;
+      box-shadow: 0 2pt 8pt rgba(123,45,142,0.06);
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 9pt; color: #4A3860; line-height: 1.35;
+    }
+    .starl-output-item {
+      display: flex; gap: 7pt;
+      padding: 5pt 10pt;
+      background: #fff;
+      border-radius: 7pt;
+      border: 1px solid #EBD9F2;
+      font-size: 8pt; line-height: 1.3;
+    }
+    .starl-output-item.learned {
+      background: linear-gradient(135deg, #FFF0FA 0%, #FFFFFF 100%);
+      border-color: #F3C4E3;
+    }
+    .starl-letter-sm {
+      width: 16pt; height: 16pt; border-radius: 50%;
+      background: #7B2D8E; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-size: 8pt; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .starl-output-item.learned .starl-letter-sm {
+      background: linear-gradient(135deg, #7B2D8E 0%, #D946A8 100%);
+    }
+    .starl-output-item .label-tiny {
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 1pt;
+      color: #7B2D8E;
+    }
+    .starl-output-item.learned .label-tiny { color: #D946A8; }
+    .starl-output-item .content {
+      color: #4A3860; line-height: 1.35;
+    }
+    .one-liner-card {
+      padding: 8pt 11pt;
+      background: linear-gradient(135deg, #4A1159 0%, #7B2D8E 60%, #D946A8 100%);
+      border-radius: 8pt; color: #fff;
+    }
+    .one-liner-label {
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 0.8pt;
+      color: rgba(255,255,255,0.7); margin-bottom: 4pt;
+    }
+    .one-liner-text {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 9pt; line-height: 1.3;
+    }
+    .edge-case {
+      margin-top: 8pt; padding: 8pt 11pt;
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFFDF5 100%);
+      border-radius: 8pt;
+      box-shadow: 0 1pt 5pt rgba(245,166,35,0.08);
+      font-size: 8pt; color: #5A3A00; line-height: 1.35;
+    }
+    .edge-case b { color: #8B6914; }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · RESULTS · DEMO 2</span>
+  </div>
+
+  <p class="kicker-label">LIVE DEMO — STAR(L) AUTO-STRUCTURING</p>
+  <h1 class="slide-title" style="font-size: 16pt;">One messy sentence → <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">a full interview story.</em></h1>
+
+  <div class="demo-grid">
+    <div class="side-panel">
+      <span class="panel-label">RAW USER INPUT</span>
+      <div class="raw-input-box">
+        "I was team leader but my teammates were overwhelmed so I reorganized tasks based on each person's strength and we ended up presenting something better than planned."
+      </div>
+      <div class="edge-case">
+        <b>Edge case tested:</b> vague phrasing, no explicit skill vocabulary. AI inferred all 5 STAR(L) parts with 100% fill rate across 20+ test inputs.
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <img class="phone-screen" src="assets/06_starl_result_top.png" alt="STAR(L) result"/>
+    </div>
+
+    <div class="side-panel">
+      <span class="panel-label">AI OUTPUT — STRUCTURED</span>
+      <div class="starl-output-item">
+        <div class="starl-letter-sm">S</div>
+        <div><span class="label-tiny">SITUATION</span><div class="content">Team leader for a critical school project facing schedule risk.</div></div>
+      </div>
+      <div class="starl-output-item">
+        <div class="starl-letter-sm">A</div>
+        <div><span class="label-tiny">ACTION</span><div class="content">Assessed each member's strengths, reallocated tasks, minimized overwhelm.</div></div>
+      </div>
+      <div class="starl-output-item">
+        <div class="starl-letter-sm">R</div>
+        <div><span class="label-tiny">RESULT</span><div class="content">Final presentation exceeded expectations, received positive recognition.</div></div>
+      </div>
+      <div class="starl-output-item learned">
+        <div class="starl-letter-sm">L</div>
+        <div><span class="label-tiny">LEARNED</span><div class="content">My strength lies in empowering others through talent alignment.</div></div>
+      </div>
+      <div class="one-liner-card">
+        <div class="one-liner-label">SUMMARY FOR RESUME</div>
+        <div class="one-liner-text">"Transformed a struggling school project by strategically reorganizing tasks based on individual strengths."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 11 · DEMO 2 — STAR(L) AUTO-STRUCTURE</span>
+    <span class="page-num-small">11 / 15</span>
+  </div>
+</body>
+</html>

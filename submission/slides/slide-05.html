@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .prompt-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16pt;
+      flex: 1; margin-top: 10pt;
+    }
+    .prompt-box {
+      background: #1F0F2E; color: #E8DAEF;
+      border-radius: 10pt; padding: 10pt 14pt;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt; line-height: 1.45;
+      border: 1px solid #3D2450;
+      box-shadow: 0 4pt 20pt rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    .prompt-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 7pt; font-weight: 700; letter-spacing: 1pt;
+      color: #D946A8; margin-bottom: 10pt;
+    }
+    .p-section { color: #9B6BB0; font-weight: 600; font-size: 7pt; margin-top: 5pt; margin-bottom: 1pt; }
+    .p-key { color: #FFC4E3; font-weight: 600; }
+    .p-comment { color: #7B6090; font-style: italic; }
+    .p-value { color: #E8DAEF; }
+    .p-step {
+      display: flex; gap: 6pt; margin: 2pt 0;
+    }
+    .p-step-num {
+      display: inline-block; min-width: 14pt;
+      color: #D946A8; font-weight: 700;
+    }
+    .example-box {
+      display: flex; flex-direction: column; gap: 10pt;
+    }
+    .example-card {
+      padding: 14pt 16pt;
+      border-radius: 10pt;
+      border: 1px solid #EBD9F2;
+    }
+    .ex-input {
+      background: #F3E8FF;
+    }
+    .ex-output {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FDF5FD 100%);
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .ex-label {
+      font-size: 7pt; font-weight: 700; letter-spacing: 1pt;
+      color: #7B2D8E; margin-bottom: 6pt;
+    }
+    .ex-user-msg {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 12pt; color: #4A3860; line-height: 1.3;
+    }
+    .skill-item {
+      display: flex; gap: 6pt; align-items: flex-start;
+      padding: 5pt 0; font-size: 9pt; color: #4A3860; line-height: 1.4;
+    }
+    .skill-name {
+      font-weight: 600; color: #7B2D8E;
+    }
+    .skill-divider {
+      border-top: 1px dashed #E0C8EB;
+    }
+    .technique-badges {
+      display: flex; gap: 4pt; flex-wrap: wrap; margin-top: 6pt;
+    }
+    .badge {
+      display: inline-block; padding: 2pt 7pt;
+      background: #F3E8FF; border: 1px solid #C99AD9;
+      border-radius: 10pt; font-size: 7pt; font-weight: 700;
+      color: #7B2D8E; letter-spacing: 0.5pt;
+    }
+    .reflective {
+      margin-top: 6pt; font-size: 9pt; font-family: 'Fraunces', serif;
+      font-style: italic; color: #7B2D8E;
+      padding-top: 6pt; border-top: 1px dashed #E0C8EB;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · PROMPT 1 OF 3</span>
+  </div>
+
+  <p class="kicker-label">PROMPT 1 — DAILY GROWTH DISCOVERY</p>
+  <h1 class="slide-title" style="font-size: 17pt;">Finding hidden skills <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">in 30 seconds.</em></h1>
+  <div class="technique-badges">
+    <span class="badge">COSTAR-A</span>
+    <span class="badge">CHAIN-OF-THOUGHT</span>
+    <span class="badge">METACOGNITIVE PROMPTING</span>
+    <span class="badge">PERSONA-BASED</span>
+  </div>
+
+  <div class="prompt-layout">
+    <div class="prompt-box">
+      <div class="prompt-label">SYSTEM PROMPT — EXCERPT</div>
+
+      <div class="p-section">## COSTAR-A</div>
+      <div><span class="p-key">Context:</span> User shares something trivial.</div>
+      <div><span class="p-key">Objective:</span> Discover 2-3 hidden skills.</div>
+      <div><span class="p-key">Style:</span> Best friend who is a career coach.</div>
+      <div><span class="p-key">Audience:</span> Women who underestimate themselves.</div>
+
+      <div class="p-section">## Chain-of-Thought (internal)</div>
+      <div class="p-step"><span class="p-step-num">1.</span> Action Extraction <span class="p-comment">— what did they do?</span></div>
+      <div class="p-step"><span class="p-step-num">2.</span> Skill Mapping <span class="p-comment">— 20 competencies</span></div>
+      <div class="p-step"><span class="p-step-num">3.</span> Value Discovery <span class="p-comment">— connect to pro skills</span></div>
+      <div class="p-step"><span class="p-step-num">4.</span> Encouragement <span class="p-comment">— specific, genuine</span></div>
+
+      <div class="p-section">## Metacognitive Trigger</div>
+      <div>End with ONE reflective question.</div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-card ex-input">
+        <div class="ex-label">USER INPUT</div>
+        <div class="ex-user-msg">"I compared discounts at the grocery store today"</div>
+      </div>
+
+      <div class="example-card ex-output">
+        <div class="ex-label">AI OUTPUT (3 HIDDEN SKILLS)</div>
+        <div class="skill-item"><span class="skill-name">Analytical Thinking</span> — processing multiple data points, finding patterns</div>
+        <div class="skill-divider"></div>
+        <div class="skill-item"><span class="skill-name">Decision-Making Under Constraints</span> — budget-value optimization</div>
+        <div class="skill-divider"></div>
+        <div class="skill-item"><span class="skill-name">Strategic Resource Management</span> — evaluating before choosing</div>
+        <div class="reflective">"Did you realize that grocery shopping uses the same skills as business strategy?"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 05 · PROMPT 1 — DAILY GROWTH DISCOVERY</span>
+    <span class="page-num-small">05 / 15</span>
+  </div>
+</body>
+</html>

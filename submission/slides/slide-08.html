@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    .timeline {
+      display: flex; flex-direction: column; gap: 5pt;
+      flex: 1; margin-top: 10pt; justify-content: space-between;
+    }
+    .version-row {
+      display: grid; grid-template-columns: 52pt 1fr 1fr;
+      gap: 12pt; align-items: center;
+      padding: 7pt 14pt;
+      background: #fff;
+      border-radius: 8pt;
+      border: 1px solid #EBD9F2;
+      box-shadow: 0 1pt 3pt rgba(123,45,142,0.03);
+      position: relative;
+    }
+    .version-row.final {
+      background: linear-gradient(135deg, #7B2D8E 0%, #D946A8 100%);
+      border: none;
+      box-shadow: 0 4pt 20pt rgba(123,45,142,0.18);
+    }
+    .version-tag {
+      font-family: 'Fraunces', serif;
+      font-size: 12pt; font-weight: 500;
+      color: #7B2D8E;
+    }
+    .version-row.final .version-tag {
+      color: #fff;
+    }
+    .version-tag .final-badge {
+      display: inline-block; font-family: 'Inter', sans-serif;
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 0.6pt;
+      background: rgba(255,255,255,0.25); color: #fff;
+      padding: 2pt 6pt; border-radius: 6pt; margin-left: 4pt;
+      vertical-align: middle;
+    }
+    .problem-label {
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 0.6pt;
+      color: #B85C8A; margin-bottom: 1pt;
+    }
+    .fix-label {
+      font-size: 6.5pt; font-weight: 700; letter-spacing: 0.6pt;
+      color: #5A9B6B; margin-bottom: 1pt;
+    }
+    .version-row.final .problem-label,
+    .version-row.final .fix-label {
+      color: rgba(255,255,255,0.7);
+    }
+    .problem-text, .fix-text {
+      font-size: 8.5pt; color: #4A3860; line-height: 1.25;
+    }
+    .version-row.final .problem-text,
+    .version-row.final .fix-text {
+      color: rgba(255,255,255,0.95);
+    }
+    .arrow-connect {
+      position: absolute; right: -8pt; top: 50%;
+      transform: translateY(-50%);
+      color: #D946A8; font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-top">
+    <div class="brand-small"><div class="brand-dot-small"></div>BLOOMHER</div>
+    <span class="challenge-chip">CHALLENGE · ITERATION</span>
+  </div>
+
+  <p class="kicker-label">DESIGN PROCESS — ITERATIVE PROMPT REFINEMENT</p>
+  <h1 class="slide-title" style="font-size: 17pt;">Six versions. <em style="font-family:Fraunces;font-style:italic;color:#D946A8;">What we learned from failing.</em></h1>
+  <p class="slide-subtitle">
+    Documented iteration log for Prompt 1 — each version solved a specific failure mode from user testing.
+  </p>
+
+  <div class="timeline">
+    <div class="version-row">
+      <div class="version-tag">v1.0</div>
+      <div>
+        <div class="problem-label">PROBLEM OBSERVED</div>
+        <div class="problem-text">Skills were too abstract — "good job" with no actionable insight</div>
+      </div>
+      <div>
+        <div class="fix-label">REFINEMENT APPLIED</div>
+        <div class="fix-text">Added rule: "connect every skill to a professional competency"</div>
+      </div>
+    </div>
+
+    <div class="version-row">
+      <div class="version-tag">v1.1</div>
+      <div>
+        <div class="problem-label">PROBLEM OBSERVED</div>
+        <div class="problem-text">Praise felt generic — users saw through the sycophancy</div>
+      </div>
+      <div>
+        <div class="fix-label">REFINEMENT APPLIED</div>
+        <div class="fix-text">"Always be specific to THEIR experience, never general praise"</div>
+      </div>
+    </div>
+
+    <div class="version-row">
+      <div class="version-tag">v1.2</div>
+      <div>
+        <div class="problem-label">PROBLEM OBSERVED</div>
+        <div class="problem-text">Missing reflection — users didn't internalize the insight</div>
+      </div>
+      <div>
+        <div class="fix-label">REFINEMENT APPLIED</div>
+        <div class="fix-text">Added metacognitive trigger question at the end</div>
+      </div>
+    </div>
+
+    <div class="version-row">
+      <div class="version-tag">v2.0</div>
+      <div>
+        <div class="problem-label">PROBLEM OBSERVED</div>
+        <div class="problem-text">No consistent framework → inconsistent outputs</div>
+      </div>
+      <div>
+        <div class="fix-label">REFINEMENT APPLIED</div>
+        <div class="fix-text">Applied full COSTAR-A structure (C·O·S·T·A·R·Answer)</div>
+      </div>
+    </div>
+
+    <div class="version-row">
+      <div class="version-tag">v2.1</div>
+      <div>
+        <div class="problem-label">PROBLEM OBSERVED</div>
+        <div class="problem-text">CoT reasoning was implicit → model sometimes skipped steps</div>
+      </div>
+      <div>
+        <div class="fix-label">REFINEMENT APPLIED</div>
+        <div class="fix-text">Made reasoning chain explicit: 4-step internal process</div>
+      </div>
+    </div>
+
+    <div class="version-row final">
+      <div class="version-tag">v3.0<span class="final-badge">FINAL</span></div>
+      <div>
+        <div class="problem-label">INTEGRATION</div>
+        <div class="problem-text">All techniques + safety rules combined coherently</div>
+      </div>
+      <div>
+        <div class="fix-label">OUTCOME</div>
+        <div class="fix-text">Production-ready prompt, stable across 20+ test cases</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>SLIDE 08 · ITERATION · PROMPT 1 (similar logs exist for P2 &amp; P3)</span>
+    <span class="page-num-small">08 / 15</span>
+  </div>
+</body>
+</html>

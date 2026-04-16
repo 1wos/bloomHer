@@ -38,6 +38,13 @@ export interface STARLInput {
   learned: string;
 }
 
+export interface ReasoningStep {
+  label: string;
+  content: string;
+}
+
+export type VerificationState = 'pending' | 'approved' | 'edited' | 'rejected';
+
 export interface STARLResult {
   structured: {
     situation: string;
@@ -49,6 +56,16 @@ export interface STARLResult {
   skillsDiscovered: { name: string; explanation: string }[];
   oneLineSummary: string;
   metacognitiveQuestion: string;
+  reasoningSteps?: ReasoningStep[];
+}
+
+export interface GrowthDiscoveryResult {
+  acknowledgment: string;
+  skills: Skill[];
+  encouragement: string;
+  growthSticker?: string;
+  metacognitiveQuestion?: string;
+  reasoningSteps?: ReasoningStep[];
 }
 
 export interface Message {

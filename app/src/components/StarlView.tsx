@@ -3,6 +3,7 @@ import type { STARLResult } from '../types';
 import { structureSTARL } from '../services/ai';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { collectSkill, addEntry } from '../services/storage';
+import ThinkingDots from './ThinkingDots';
 
 interface StarlViewProps {
   onSkillCollected?: () => void;
@@ -179,6 +180,37 @@ Powered by BloomHer 🌷`.trim();
             </div>
           </div>
 
+          {/* Observable reasoning — how AI arrived here */}
+          {result.reasoningSteps && result.reasoningSteps.length > 0 && (
+            <details className="group rounded-2xl border border-[#7B2D8E]/15 bg-[#FAF5FF] mb-6 overflow-hidden">
+              <summary className="cursor-pointer select-none list-none px-5 py-3 flex items-center gap-2 hover:bg-[#F3E8FF]/70 transition-colors">
+                <span className="text-[11px] font-semibold tracking-[0.18em] text-[#7B2D8E] uppercase">
+                  How the AI arrived at this
+                </span>
+                <span className="text-[#7B2D8E]/60 text-xs ml-auto group-open:rotate-90 transition-transform">
+                  &rsaquo;
+                </span>
+              </summary>
+              <div className="px-5 pb-5 pt-1 flex flex-col gap-3">
+                {result.reasoningSteps.map((step, idx) => (
+                  <div key={idx} className="flex gap-3 items-start">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-[#7B2D8E]/10 flex items-center justify-center text-[11px] font-bold text-[#7B2D8E] mt-0.5">
+                      {idx + 1}
+                    </span>
+                    <div className="flex-1">
+                      <div className="text-[11px] font-semibold text-[#7B2D8E] uppercase tracking-wide">
+                        {step.label}
+                      </div>
+                      <div className="text-sm text-[#4A3860] leading-relaxed mt-1">
+                        {step.content}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          )}
+
           {/* One-liner — HERO money shot */}
           <div
             className="rounded-3xl p-8 mb-6 text-white relative overflow-hidden shadow-xl"
@@ -321,7 +353,9 @@ Powered by BloomHer 🌷`.trim();
     return (
       <div className="min-h-screen bg-[#F3E8FF]/30 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block w-12 h-12 border-4 border-[#7B2D8E]/20 border-t-[#7B2D8E] rounded-full animate-spin mb-4" />
+          <div className="mb-4 flex justify-center">
+            <ThinkingDots size="lg" />
+          </div>
           <p className="text-[#7B2D8E] font-medium text-lg">
             Structuring your experience...
           </p>

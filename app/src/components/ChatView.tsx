@@ -1,18 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
 import SkillCard, { type Skill } from './SkillCard';
 import GrowthStreak from './GrowthStreak';
+import ThinkingDots from './ThinkingDots';
 import { discoverGrowth } from '../services/ai';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { collectSkill, addEntry } from '../services/storage';
 import type { EntryRecord } from '../services/storage';
+import type { ReasoningStep } from '../types';
 
 interface Message {
   id: string;
-  type: 'user' | 'ai' | 'skill';
+  type: 'user' | 'ai' | 'skill' | 'reasoning';
   text?: string;
   skill?: Skill;
   // Store raw skill data for storage calls
   rawSkill?: { name: string; icon: string; description: string };
+  reasoningSteps?: ReasoningStep[];
   timestamp: string;
 }
 
@@ -115,6 +118,17 @@ export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatV
         timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, aiMsg]);
+
+      // Observable reasoning steps (Julia feedback: make thinking transparent)
+      if (result.reasoningSteps && result.reasoningSteps.length > 0) {
+        const reasoningMsg: Message = {
+          id: `reasoning-${Date.now()}`,
+          type: 'reasoning',
+          reasoningSteps: result.reasoningSteps,
+          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        };
+        setMessages((prev) => [...prev, reasoningMsg]);
+      }
 
       // Collect skills for the entry record
       const entrySkills: { name: string; icon: string; description: string }[] = [];
@@ -226,22 +240,52 @@ export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatV
                 />
               </div>
             )}
+
+            {msg.type === 'reasoning' && msg.reasoningSteps && msg.reasoningSteps.length > 0 && (
+              <div className="ml-10 mr-2 mt-1">
+                <details className="group rounded-xl border border-[#7B2D8E]/15 bg-[#FAF5FF] overflow-hidden">
+                  <summary className="cursor-pointer select-none list-none px-3 py-2 flex items-center gap-2 hover:bg-[#F3E8FF]/70 transition-colors">
+                    <span className="text-[11px] font-semibold tracking-wide text-[#7B2D8E] uppercase">
+                      How I arrived at this
+                    </span>
+                    <span className="text-[#7B2D8E]/60 text-xs ml-auto group-open:rotate-90 transition-transform">
+                      &rsaquo;
+                    </span>
+                  </summary>
+                  <div className="px-3 pb-3 pt-1 flex flex-col gap-2">
+                    {msg.reasoningSteps.map((step, idx) => (
+                      <div key={idx} className="flex gap-2 items-start">
+                        <span className="shrink-0 w-5 h-5 rounded-full bg-[#7B2D8E]/10 flex items-center justify-center text-[10px] font-bold text-[#7B2D8E] mt-0.5">
+                          {idx + 1}
+                        </span>
+                        <div className="flex-1">
+                          <div className="text-[11px] font-semibold text-[#7B2D8E]">
+                            {step.label}
+                          </div>
+                          <div className="text-xs text-[#4A3860] leading-relaxed mt-0.5">
+                            {step.content}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              </div>
+            )}
           </div>
         ))}
 
-        {/* Typing indicator */}
+        {/* Typing indicator — CareFlow-style 3 dots */}
         {isTyping && (
           <div className="flex items-start gap-2.5 animate-fade-in-up">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #7B2D8E, #D946A8)' }}>
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm"
+              style={{ background: 'linear-gradient(135deg, #7B2D8E, #D946A8)' }}
+            >
               B
             </div>
             <div className="bg-lavender/70 rounded-2xl rounded-tl-md px-4 py-3">
-              <div className="flex gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-purple/50 animate-pulse-soft" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 rounded-full bg-purple/50 animate-pulse-soft" style={{ animationDelay: '300ms' }} />
-                <div className="w-2 h-2 rounded-full bg-purple/50 animate-pulse-soft" style={{ animationDelay: '600ms' }} />
-              </div>
+              <ThinkingDots label="BloomHer is thinking" size="sm" />
             </div>
           </div>
         )}

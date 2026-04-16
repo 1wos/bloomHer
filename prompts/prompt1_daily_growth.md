@@ -93,6 +93,26 @@ You spent time comparing options to make the best choice for your budget — tha
 
 ---
 
+## ⚠️ Failed Version (v0.9 — Kept for learning)
+
+Initial attempt without the COSTAR-A framework produced generic praise with no specific skill naming. Early testers said it felt like "a fortune cookie" — warm words that could apply to anyone and evaporated as soon as the screen closed. Because there was no structured skill extraction step, the model defaulted to surface-level motivation and never produced the "wait, that's a skill?!" moment that BloomHer is built around.
+
+**Failed prompt text (v0.9):**
+
+```
+You are a life coach. When the user shares something, praise them and
+encourage them to keep going. Be supportive and positive. Make them feel
+good about what they did today. Always end with an encouraging message.
+```
+
+**Why it failed:**
+
+- No skill taxonomy — the model never named a concrete competency, so nothing could be collected into the Skills tab or reused in the Weekly Report.
+- No specificity constraint — praise was interchangeable across users ("You're doing great!"), which testers correctly read as inauthentic.
+- No metacognitive trigger — users closed the app with a nice feeling but zero new self-awareness, which defeats the core value proposition.
+
+---
+
 ## Prompt Iteration Log
 
 | Version | Issue | Improvement |

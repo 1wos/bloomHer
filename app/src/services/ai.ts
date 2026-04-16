@@ -1,4 +1,4 @@
-import type { Entry, STARLInput, STARLResult, WeeklyReport, AIProvider } from '../types';
+import type { Entry, STARLInput, STARLResult, WeeklyReport, AIProvider, GrowthDiscoveryResult } from '../types';
 import { sampleSTARLResult, sampleWeeklyReport, sampleSkills } from '../data/mockData';
 
 // ---------------------------------------------------------------------------
@@ -19,12 +19,19 @@ Your mission: When a woman shares something from her day, you find the growth sh
 
 **Response Format** (return as JSON):
 {
+  "reasoningSteps": [
+    { "label": "What I noticed", "content": "the specific action/detail you observed in their input" },
+    { "label": "Skills this required", "content": "what competencies were needed to do this" },
+    { "label": "Why this matters", "content": "connection to professional/life skills this person can own" }
+  ],
   "acknowledgment": "Show you really listened",
   "skills": [{ "name": "SkillName", "icon": "emoji", "description": "brief explanation connecting to professional skills" }],
   "encouragement": "One warm, specific encouragement message",
   "growthSticker": "emoji + label",
   "metacognitiveQuestion": "End with a reflective question"
 }
+
+**IMPORTANT — Observable Reasoning**: The "reasoningSteps" field must be explicit and specific to THIS user's input (no template phrases). This makes your thinking transparent instead of hidden. Populate 3 steps minimum.
 
 Safety Rules:
 1. NEVER give negative evaluations or criticism
@@ -68,6 +75,11 @@ Given STAR(L) input from the user, enhance and structure it. Then discover 3-5 h
 
 Return as JSON:
 {
+  "reasoningSteps": [
+    { "label": "What I read", "content": "the core experience you extracted from user input" },
+    { "label": "What I inferred", "content": "the implicit Task/Action/Result details you reconstructed" },
+    { "label": "Why this shows growth", "content": "the meta-pattern that connects S→T→A→R to L" }
+  ],
   "structured": {
     "situation": "enhanced situation description",
     "task": "enhanced task description",
@@ -79,6 +91,8 @@ Return as JSON:
   "oneLineSummary": "powerful one-sentence summary the user can use anywhere",
   "metacognitiveQuestion": "reflective closing question"
 }
+
+**IMPORTANT — Observable Reasoning**: The "reasoningSteps" field must be specific and transparent (no template phrases). This replaces hidden chain-of-thought with visible, auditable reasoning steps.
 
 Safety Rules:
 1. NEVER dismiss any experience as "too small"
@@ -206,17 +220,19 @@ async function callAI(systemPrompt: string, userMessage: string): Promise<string
 /**
  * Discover growth/skills from a daily experience input.
  */
-export async function discoverGrowth(
-  input: string
-): Promise<{ skills: { name: string; icon: string; description: string }[]; encouragement: string }> {
+export async function discoverGrowth(input: string): Promise<GrowthDiscoveryResult> {
   const raw = await callAI(DAILY_GROWTH_SYSTEM_PROMPT, input);
 
   if (raw) {
     try {
       const parsed = JSON.parse(raw);
       return {
+        acknowledgment: parsed.acknowledgment ?? '',
         skills: parsed.skills ?? [],
         encouragement: parsed.encouragement ?? '',
+        growthSticker: parsed.growthSticker,
+        metacognitiveQuestion: parsed.metacognitiveQuestion,
+        reasoningSteps: parsed.reasoningSteps ?? [],
       };
     } catch {
       console.warn('[BloomHer AI] Failed to parse discoverGrowth response');
@@ -228,12 +244,15 @@ export async function discoverGrowth(
     name: s.name,
     icon: s.icon,
     description: s.description,
+    category: s.category,
   }));
 
   return {
+    acknowledgment: '',
     skills: mockSkills,
     encouragement:
       'What you shared shows real strength. Every small action builds something bigger — and you are building more than you realize!',
+    reasoningSteps: [],
   };
 }
 
@@ -323,6 +342,7 @@ INSTRUCTIONS:
         skillsDiscovered: parsed.skillsDiscovered ?? [],
         oneLineSummary: parsed.oneLineSummary ?? '',
         metacognitiveQuestion: parsed.metacognitiveQuestion ?? '',
+        reasoningSteps: parsed.reasoningSteps ?? [],
       };
     } catch {
       console.warn('[BloomHer AI] Failed to parse STARL response');

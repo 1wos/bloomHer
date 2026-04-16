@@ -1,6 +1,8 @@
 // BloomHer localStorage service
 // 모든 페이지가 이 하나의 저장소를 공유
 
+export type VerificationState = 'pending' | 'approved' | 'edited' | 'rejected';
+
 export interface SkillRecord {
   name: string;
   icon: string;
@@ -9,11 +11,20 @@ export interface SkillRecord {
   category: string;
 }
 
+export interface EntrySkillItem {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  verification?: VerificationState;
+  editedName?: string;
+}
+
 export interface EntryRecord {
   id: string;
   date: string;
   input: string;
-  skills: { name: string; icon: string; description: string }[];
+  skills: EntrySkillItem[];
   type: 'daily' | 'starl';
 }
 
@@ -37,10 +48,49 @@ function getDefaultData(): BloomHerData {
   };
 }
 
+// 짧은 uuid 유사 id 생성 (backward compatible fallback 포함)
+function shortId(): string {
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID().slice(0, 8);
+    }
+  } catch {
+    // fall through
+  }
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+// 기존 데이터 호환성 보정: id/verification 기본값 주입
+function normalizeData(data: BloomHerData): BloomHerData {
+  if (!data || !Array.isArray(data.entries)) return data;
+  for (const entry of data.entries) {
+    if (!entry || !Array.isArray(entry.skills)) continue;
+    entry.skills = entry.skills.map((s) => {
+      const skill = s as Partial<EntrySkillItem> & {
+        name: string;
+        icon: string;
+        description: string;
+      };
+      return {
+        id: skill.id ?? shortId(),
+        name: skill.name,
+        icon: skill.icon,
+        description: skill.description,
+        verification: skill.verification ?? 'pending',
+        editedName: skill.editedName,
+      };
+    });
+  }
+  return data;
+}
+
 export function loadData(): BloomHerData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw) as BloomHerData;
+      return normalizeData(parsed);
+    }
   } catch (e) {
     console.warn('[BloomHer] Failed to load data:', e);
   }
@@ -128,7 +178,27 @@ export function addEntry(entry: EntryRecord): BloomHerData {
   const data = loadData();
   const todayStr = today();
 
-  data.entries.push(entry);
+  // 새로 들어오는 엔트리의 스킬에 id/verification 자동 주입
+  const normalizedEntry: EntryRecord = {
+    ...entry,
+    skills: (entry.skills ?? []).map((s) => {
+      const skill = s as Partial<EntrySkillItem> & {
+        name: string;
+        icon: string;
+        description: string;
+      };
+      return {
+        id: skill.id ?? shortId(),
+        name: skill.name,
+        icon: skill.icon,
+        description: skill.description,
+        verification: skill.verification ?? 'pending',
+        editedName: skill.editedName,
+      };
+    }),
+  };
+
+  data.entries.push(normalizedEntry);
 
   if (!data.loggedDays.includes(todayStr)) {
     data.loggedDays.push(todayStr);
@@ -139,6 +209,67 @@ export function addEntry(entry: EntryRecord): BloomHerData {
 
   saveData(data);
   return data;
+}
+
+// 스킬의 verification 상태 업데이트 (HITL)
+export function setSkillVerification(
+  entryId: string,
+  skillId: string,
+  state: VerificationState,
+  editedName?: string
+): BloomHerData {
+  const data = loadData();
+  const entry = data.entries.find((e) => e.id === entryId);
+  if (entry) {
+    const skill = entry.skills.find((s) => s.id === skillId);
+    if (skill) {
+      skill.verification = state;
+      if (state === 'edited' && editedName !== undefined) {
+        skill.editedName = editedName;
+      }
+    }
+  }
+  saveData(data);
+  return data;
+}
+
+// 특정 날짜에 approved/edited 처리된 스킬만 반환
+export function getApprovedSkillsByDate(
+  date: string
+): Array<{ name: string; icon: string }> {
+  const data = loadData();
+  const result: Array<{ name: string; icon: string }> = [];
+  for (const entry of data.entries) {
+    if (entry.date !== date) continue;
+    for (const skill of entry.skills) {
+      const v = skill.verification ?? 'pending';
+      if (v === 'approved' || v === 'edited') {
+        result.push({
+          name: skill.editedName && v === 'edited' ? skill.editedName : skill.name,
+          icon: skill.icon,
+        });
+      }
+    }
+  }
+  return result;
+}
+
+// 전체 verification 통계
+export function getVerificationStats(): {
+  approved: number;
+  edited: number;
+  rejected: number;
+  pending: number;
+} {
+  const data = loadData();
+  const stats = { approved: 0, edited: 0, rejected: 0, pending: 0 };
+  for (const entry of data.entries) {
+    for (const skill of entry.skills) {
+      const v: VerificationState = skill.verification ?? 'pending';
+      stats[v] += 1;
+    }
+  }
+  return stats;
 }
 
 // 이번 주 엔트리 가져오기 (Weekly Report용)

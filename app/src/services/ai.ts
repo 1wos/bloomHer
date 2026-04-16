@@ -252,7 +252,20 @@ export async function discoverGrowth(input: string): Promise<GrowthDiscoveryResu
     skills: mockSkills,
     encouragement:
       'What you shared shows real strength. Every small action builds something bigger — and you are building more than you realize!',
-    reasoningSteps: [],
+    reasoningSteps: [
+      {
+        label: 'What I noticed',
+        content: 'You took a specific action today that shows intent and attention to detail.',
+      },
+      {
+        label: 'Skills this required',
+        content: 'Your action draws on analytical thinking, empathy, and creative problem-solving.',
+      },
+      {
+        label: 'Why this matters',
+        content: 'These are transferable skills that professionals actively develop — you already practice them.',
+      },
+    ],
   };
 }
 
@@ -359,6 +372,20 @@ INSTRUCTIONS:
       result: experience.result,
       learned: experience.learned,
     },
+    reasoningSteps: [
+      {
+        label: 'What I read',
+        content: 'You described a situation with a concrete context and an implicit goal to navigate it.',
+      },
+      {
+        label: 'What I inferred',
+        content: 'Even without full STAR detail, your language signaled decisions, actions, and an outcome worth naming.',
+      },
+      {
+        label: 'Why this shows growth',
+        content: 'The "L" (Learned) connects what you did to who you are becoming — that is the metacognitive shift.',
+      },
+    ],
   };
 }
 

@@ -2,10 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import SkillCard, { type Skill } from './SkillCard';
 import GrowthStreak from './GrowthStreak';
 import ThinkingDots from './ThinkingDots';
+import HITLControls from './HITLControls';
 import { discoverGrowth } from '../services/ai';
 import { useTypewriter } from '../hooks/useTypewriter';
-import { collectSkill, addEntry } from '../services/storage';
-import type { EntryRecord } from '../services/storage';
+import { collectSkill, addEntry, setSkillVerification } from '../services/storage';
+import type { EntryRecord, VerificationState } from '../services/storage';
 import type { ReasoningStep } from '../types';
 
 interface Message {
@@ -15,6 +16,10 @@ interface Message {
   skill?: Skill;
   // Store raw skill data for storage calls
   rawSkill?: { name: string; icon: string; description: string };
+  // HITL verification tracking
+  entryId?: string;
+  skillId?: string;
+  verification?: VerificationState;
   reasoningSteps?: ReasoningStep[];
   timestamp: string;
 }
@@ -75,6 +80,33 @@ export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatV
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  const handleVerify = (msg: Message, state: VerificationState) => {
+    if (!msg.entryId || !msg.skillId) return;
+    let editedName: string | undefined;
+    if (state === 'edited') {
+      const input = window.prompt(
+        'Edit this skill name:',
+        msg.rawSkill?.name ?? msg.skill?.title ?? ''
+      );
+      if (!input || !input.trim()) return;
+      editedName = input.trim();
+    }
+    setSkillVerification(msg.entryId, msg.skillId, state, editedName);
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === msg.id
+          ? {
+              ...m,
+              verification: state,
+              skill: m.skill && editedName ? { ...m.skill, title: editedName } : m.skill,
+              rawSkill: m.rawSkill && editedName ? { ...m.rawSkill, name: editedName } : m.rawSkill,
+            }
+          : m
+      )
+    );
+    onSkillCollected();
+  };
+
   const handleCollect = (msg: Message) => {
     if (msg.rawSkill) {
       const category = mapCategory(msg.rawSkill.name);
@@ -130,43 +162,57 @@ export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatV
         setMessages((prev) => [...prev, reasoningMsg]);
       }
 
-      // Collect skills for the entry record
-      const entrySkills: { name: string; icon: string; description: string }[] = [];
+      // Pre-generate stable IDs so we can wire HITL callbacks
+      const entryId = `entry-${Date.now()}`;
+      const skillMetas = (result.skills ?? []).map((s, i) => {
+        const icon = s.icon || ['\u{1F331}', '\u{1F50D}', '\u{1F4A1}', '\u26A1', '\u{1F3AF}'][i % 5];
+        return {
+          skillId: `sk-${Date.now()}-${i}`,
+          name: s.name,
+          icon,
+          description: s.description,
+        };
+      });
 
-      // Skill cards
-      if (result.skills && result.skills.length > 0) {
-        for (let i = 0; i < result.skills.length; i++) {
-          await new Promise((r) => setTimeout(r, 400));
-          const s = result.skills[i];
-          const icon = s.icon || ['\u{1F331}', '\u{1F50D}', '\u{1F4A1}', '\u26A1', '\u{1F3AF}'][i % 5];
-          entrySkills.push({ name: s.name, icon, description: s.description });
-          const skillMsg: Message = {
-            id: `skill-${Date.now()}-${i}`,
-            type: 'skill',
-            skill: {
-              id: `skill-${Date.now()}-${i}`,
-              emoji: icon,
-              title: s.name,
-              description: s.description,
-              category: mapCategory(s.name || 'creativity'),
-            },
-            rawSkill: { name: s.name, icon, description: s.description },
-            timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
-          };
-          setMessages((prev) => [...prev, skillMsg]);
-        }
-      }
-
-      // Save entry to localStorage
+      // Save entry FIRST so setSkillVerification can find it
       const entry: EntryRecord = {
-        id: `entry-${Date.now()}`,
+        id: entryId,
         date: new Date().toISOString().split('T')[0],
         input: trimmed,
-        skills: entrySkills,
+        skills: skillMetas.map((m) => ({
+          id: m.skillId,
+          name: m.name,
+          icon: m.icon,
+          description: m.description,
+          verification: 'pending',
+        })),
         type: 'daily',
       };
       addEntry(entry);
-      onSkillCollected(); // refresh parent state
+      onSkillCollected();
+
+      // Skill cards (staggered animation)
+      for (let i = 0; i < skillMetas.length; i++) {
+        await new Promise((r) => setTimeout(r, 400));
+        const m = skillMetas[i];
+        const skillMsg: Message = {
+          id: `skill-${Date.now()}-${i}`,
+          type: 'skill',
+          skill: {
+            id: m.skillId,
+            emoji: m.icon,
+            title: m.name,
+            description: m.description,
+            category: mapCategory(m.name || 'creativity'),
+          },
+          rawSkill: { name: m.name, icon: m.icon, description: m.description },
+          entryId,
+          skillId: m.skillId,
+          verification: 'pending',
+          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        };
+        setMessages((prev) => [...prev, skillMsg]);
+      }
     } catch (err) {
       console.error('AI call failed:', err);
       const errorMsg: Message = {
@@ -232,12 +278,24 @@ export default function ChatView({ onSkillCollected, streak, loggedDays }: ChatV
             )}
 
             {msg.type === 'skill' && msg.skill && (
-              <div className="ml-10 mr-2">
+              <div className="ml-10 mr-2 flex flex-col gap-2">
                 <SkillCard
                   skill={msg.skill}
                   onCollect={() => handleCollect(msg)}
                   delay={100}
                 />
+                {msg.entryId && msg.skillId && (
+                  <div className="pl-1">
+                    <HITLControls
+                      size="sm"
+                      state={msg.verification ?? 'pending'}
+                      onApprove={() => handleVerify(msg, 'approved')}
+                      onEdit={() => handleVerify(msg, 'edited')}
+                      onReject={() => handleVerify(msg, 'rejected')}
+                      onUndo={() => handleVerify(msg, 'pending')}
+                    />
+                  </div>
+                )}
               </div>
             )}
 

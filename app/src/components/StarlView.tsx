@@ -4,6 +4,8 @@ import { structureSTARL } from '../services/ai';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { collectSkill, addEntry } from '../services/storage';
 import ThinkingDots from './ThinkingDots';
+import HITLControls from './HITLControls';
+import type { VerificationState } from '../services/storage';
 
 interface StarlViewProps {
   onSkillCollected?: () => void;
@@ -14,6 +16,18 @@ export default function StarlView({ onSkillCollected }: StarlViewProps = {}) {
   const [result, setResult] = useState<STARLResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [verifications, setVerifications] = useState<Record<number, { state: VerificationState; editedName?: string }>>({});
+
+  const verifySkill = (index: number, state: VerificationState) => {
+    let editedName: string | undefined;
+    if (state === 'edited') {
+      const current = result?.skillsDiscovered[index]?.name ?? '';
+      const next = window.prompt('Edit this skill name:', current);
+      if (!next || !next.trim()) return;
+      editedName = next.trim();
+    }
+    setVerifications((prev) => ({ ...prev, [index]: { state, editedName } }));
+  };
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
@@ -259,8 +273,20 @@ Powered by BloomHer 🌷`.trim();
                     {['💎', '⭐', '🌟', '✨', '💫'][i % 5]}
                   </div>
                   <div className="flex-1">
-                    <span className="font-bold text-[#7B2D8E]">{skill.name}</span>
+                    <span className="font-bold text-[#7B2D8E]">
+                      {verifications[i]?.editedName ?? skill.name}
+                    </span>
                     <p className="text-gray-600 text-sm mt-1 leading-relaxed">{skill.explanation}</p>
+                    <div className="mt-2">
+                      <HITLControls
+                        size="sm"
+                        state={verifications[i]?.state ?? 'pending'}
+                        onApprove={() => verifySkill(i, 'approved')}
+                        onEdit={() => verifySkill(i, 'edited')}
+                        onReject={() => verifySkill(i, 'rejected')}
+                        onUndo={() => verifySkill(i, 'pending')}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
